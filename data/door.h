@@ -12,7 +12,7 @@ public:
 
 private:
 
-	vector<string> rules;
-	vector<string> passwords;
+	vector<string> rules_;
+	vector<string> passwords_;
 
 };
