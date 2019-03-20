@@ -17,6 +17,8 @@ int main() {
 		cout << "\nChoix : ";
 		cin >> selection;
 
+
+
 		switch (selection) {
 
 			
