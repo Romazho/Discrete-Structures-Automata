@@ -19,15 +19,17 @@ class Door {
 public:
 	Door(void) = default;
 	Door(unsigned doorNumber);
-	~Door() { file.close(); };
+	~Door() { file_.close(); };
 
 	bool readFile();
+	string getDoorName() { return doorName_; };
 
 private:
 	string doorName_;
 	vector<string> rules_;
 	vector<string> passwords_;
-	fstream file;
+	vector<string> nextDoors_;
+	fstream file_;
 
 
 };

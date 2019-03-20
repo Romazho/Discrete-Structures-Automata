@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include "agent.h"
+#include "door.h" // A Enlever
 
 void printMenu(void);
 
@@ -10,7 +11,7 @@ int main() {
 	char selection = '0';
 
 	cout << "BIENVENUE DANS LE JEUX 'Dont vous êtes le héros' ! \n \n>>> Faite votre sélection parmis le menu suivant. \n";
-
+	Door fooDoor(2);
 	while (selection != 'd') {
 
 		printMenu();
@@ -33,7 +34,8 @@ int main() {
 			break;
 
 		case 'c':
-
+			cerr << fooDoor.getDoorName() << " =>";
+			cerr << std::to_string(fooDoor.readFile());
 
 			break;
 
