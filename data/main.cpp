@@ -1,11 +1,15 @@
-
-#include <iostream>
+/****************************************************************************
+ * Fichier:			main.cpp
+ * Auteurs: 		Kevin Ciliento, Gabriel Tagliabracci et Roman Zhornytskiy
+ * Date:			20 mars 2019
+ * Description:		Execute le programme
+ ****************************************************************************/
 #include "agent.h"
 #include "door.h" // A Enlever
 
 void printMenu(void);
 
-int main() {
+int main(void) {
 
 	setlocale(LC_CTYPE, "fra"); //Afficher les caractères francais
 	char selection = '0';
@@ -24,7 +28,7 @@ int main() {
 
 			
 		case 'a':
-
+			
 			
 			break;
 

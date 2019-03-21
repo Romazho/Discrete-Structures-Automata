@@ -12,13 +12,9 @@ Door::Door(unsigned doorNumber) {
 	readFile();
 }
 
-string Door::getNextDoorByPassword(string password) const
+void Door::isValid(const NextDoor& nextDoorPair) const
 {
-	for (pair<string, string> door : doorMap_) {
-		if (door.first == password)
-			return door.first;
-	}
-	return "null";
+	(nextDoorPair.second) ? cout << "valide" : cout << "non valide";
 }
 
 bool Door::readFile() {
@@ -48,24 +44,38 @@ bool Door::readNextDoors(fstream & file)
 {
 	if (file.eof())
 		return false;
-	string password, nextDoor;
+	Password password;
+	string door;
+	NextDoor nextDoor;
+	bool validation = false;
 
 	if (rules_.size() == 1 && rules_.front() == "S->") { // Exception
-		file >> nextDoor; password = "";
+		file >> door; password = "";
+		nextDoor = make_pair(door, validation);
 		doorMap_.insert(make_pair(password, nextDoor));
 		file.close();
 		return true;
 	}
 	
 	while (!file.eof()) { //Cas normal
-		file >> password >> nextDoor;
+		file >> password >> door;
+		nextDoor = make_pair(door, validation);
 		doorMap_.insert(make_pair(password, nextDoor));
 	}
-	for (auto it = doorMap_.begin(); it != doorMap_.end(); it++) {
-		cout << " Password : " << it->first << " Door : " << it->second << endl;
-	}
+	cout << *this;
 	file.close();
 	return true;
+}
+
+ostream& operator<<(ostream& out, const Door& door)
+{
+	for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it) {
+		cout << "{" << it->first << " , " << it->second.first << " , "; door.isValid(it->second); cout << "}";
+		if (it != door.doorMap_.end())
+			cout << ",";
+	}
+	cout << endl;
+	return out;
 }
 
 

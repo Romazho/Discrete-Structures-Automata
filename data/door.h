@@ -14,21 +14,28 @@
 #include <string>
 
 using namespace std;
+using Password = std::string;
+using NextDoor = std::pair<string, bool>; // pair < nom_porte , validité >
 
 class Door {
 
 public:
 	Door(void) = default;
-	Door(unsigned doorNumber);
+	Door(unsigned doorNumber); // Appel readFile()
 
 	string getDoorName(void) const { return doorName_; } ;
 	vector<string> getRules(void) const { return rules_; };
-	string getNextDoorByPassword(string password) const;
+	map<Password, NextDoor> getDoorMap(void) const { return doorMap_; };
+
+	void isValid(const NextDoor& nextDoorPair) const; // Donne si la porte est valide ou pas
+	void validate(NextDoor& nextDoorPair) { nextDoorPair.second = true; }; // Indique que la porte est maintenant valide
+
+	friend ostream& operator<<(ostream&, const Door& door);
 
 private:
 	string doorName_;
 	vector<string> rules_;
-	map<string, string> doorMap_;// (password ; door)
+	map<Password, NextDoor> doorMap_;// 
 
 	bool readFile(); // OuvrirPorte();
 	bool readRule(fstream& file);
