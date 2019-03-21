@@ -19,6 +19,8 @@ bool Door::isValid(const NextDoor& nextDoorPair) const
 
 bool Door::readFile() {
 	fstream file(doorName_,ios::in);
+	if (!file.is_open())
+		throw invalid_argument("Cette porte n'existe pas \n");
 	return readRule(file);
 }
 

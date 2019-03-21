@@ -33,8 +33,17 @@ int main(void) {
 			break;
 
 		case 'b':
-
+			cout << "\t\n Ouvrir la porte : ";
 			
+			while(true){
+				cin >> selection;
+				try
+				{
+					agent.openDoor("Porte" + to_string(selection) + ".txt"); // if exeption will ask again
+					break; // if no exeption
+				}
+				catch (invalid_argument& ia) { ia.what(); }
+			}
 			break;
 
 		case 'c':
