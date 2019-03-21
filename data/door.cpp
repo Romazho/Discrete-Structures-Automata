@@ -58,8 +58,11 @@ bool Door::readNextDoors(fstream & file)
 	}
 	
 	while (!file.eof()) { //Cas normal
-		file >> nextDoor >> password ;
+		file >> password >> nextDoor;
 		doorMap_.insert(make_pair(password, nextDoor));
+	}
+	for (auto it = doorMap_.begin(); it != doorMap_.end(); it++) {
+		cout << " Password : " << it->first << " Door : " << it->second << endl;
 	}
 	file.close();
 	return true;
