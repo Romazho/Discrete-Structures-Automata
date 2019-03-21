@@ -12,7 +12,9 @@ class Agent {
 
 public:
 	Agent(void);
-	
+	~Agent(void);
+
+	void openDoor(string fileName);
 	
 
 private:

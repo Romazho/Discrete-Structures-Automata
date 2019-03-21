@@ -21,21 +21,22 @@ class Door {
 
 public:
 	Door(void) = default;
-	Door(unsigned doorNumber); // Appel readFile()
-
+	Door(string doorNumber, bool ispit = true); // Appel readFile()
 	string getDoorName(void) const { return doorName_; } ;
 	vector<string> getRules(void) const { return rules_; };
 	map<Password, NextDoor> getDoorMap(void) const { return doorMap_; };
 
-	void isValid(const NextDoor& nextDoorPair) const; // Donne si la porte est valide ou pas
+	bool isValid(const NextDoor& nextDoorPair) const; // Donne si la porte est valide ou pas
 	void validate(NextDoor& nextDoorPair) { nextDoorPair.second = true; }; // Indique que la porte est maintenant valide
 
 	friend ostream& operator<<(ostream&, const Door& door);
 
 private:
 	string doorName_;
+	bool isPit_;
+
 	vector<string> rules_;
-	map<Password, NextDoor> doorMap_;// 
+	map<Password, NextDoor> doorMap_;
 
 	bool readFile(); // OuvrirPorte();
 	bool readRule(fstream& file);

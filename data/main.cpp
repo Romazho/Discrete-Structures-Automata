@@ -15,7 +15,7 @@ int main(void) {
 	char selection = '0';
 
 	cout << "BIENVENUE DANS LE JEUX 'Dont vous êtes le héros' ! \n \n>>> Faite votre sélection parmis le menu suivant. \n";
-	Door fooDoor(2);
+	Agent agent;
 	while (selection != 'd') {
 
 		printMenu();
@@ -27,8 +27,8 @@ int main(void) {
 		switch (selection) {
 
 			
-		case 'a':
-			
+		case 'a': // Entrer dans le lab
+			agent.openDoor("Porte1.txt");
 			
 			break;
 
