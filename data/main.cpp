@@ -32,8 +32,6 @@ int main() {
 			break;
 
 		case 'c':
-			cerr << fooDoor.getDoorName() << " =>";
-			cerr << std::to_string(fooDoor.readFile());
 
 			break;
 

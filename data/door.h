@@ -8,7 +8,8 @@
 #ifndef DOOR_H
 #define DOOR_H
 #include <fstream>
-
+#include <iostream>
+#include <map>
 #include <vector>
 #include <string>
 
@@ -19,19 +20,19 @@ class Door {
 public:
 	Door(void) = default;
 	Door(unsigned doorNumber);
-	~Door() { file_.close(); };
 
-	bool readFile();
-	string getDoorName() { return doorName_; };
+	string getDoorName(void) const { return doorName_; } ;
+	vector<string> getRules(void) const { return rules_; };
+	string getNextDoorByPassword(string password) const;
 
 private:
 	string doorName_;
 	vector<string> rules_;
-	vector<string> passwords_;
-	vector<string> nextDoors_;
-	fstream file_;
+	map<string, string> doorMap_;// (password ; door)
 
-
+	bool readFile(); // OuvrirPorte();
+	bool readRule(fstream& file);
+	bool readNextDoors(fstream & file);
 };
 
 
