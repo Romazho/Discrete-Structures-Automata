@@ -29,20 +29,20 @@ int main(void) {
 			
 		case 'a': // Entrer dans le lab
 			agent.openDoor("Porte1.txt");
-			
 			break;
 
 		case 'b':
-			cout << "\t\n Ouvrir la porte : ";
+			cout << "\t\t\n Ouvrir la porte : ";
 			
 			while(true){
-				cin >> selection;
+				int doorSelection;
+				cin >> doorSelection;
 				try
 				{
-					agent.openDoor("Porte" + to_string(selection) + ".txt"); // if exeption will ask again
-					break; // if no exeption
+					agent.openDoor("Porte" + to_string(doorSelection) + ".txt"); // if exception will ask again
+					break; // if no exception
 				}
-				catch (invalid_argument& ia) { ia.what(); }
+				catch (invalid_argument& ia) { cout << ia.what(); }
 			}
 			break;
 

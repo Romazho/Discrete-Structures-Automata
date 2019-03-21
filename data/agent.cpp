@@ -6,6 +6,7 @@
  ****************************************************************************/
 
 #include "agent.h"
+#include <mutex>
 
 Agent::Agent(void)
 {
@@ -20,8 +21,9 @@ Agent::~Agent(void)
 		delete it;
 }
 
-void Agent::openDoor(string fileName)
+void Agent::openDoor(const string& fileName)
 {
-	path_.push_back(new Door(fileName));
+	Door * newDoor = new Door(fileName); // if there is an exeption, will never be constructed;
+	path_.push_back(newDoor);
 	cout << *path_.back();
 }

@@ -14,7 +14,7 @@ public:
 	Agent(void);
 	~Agent(void);
 
-	void openDoor(string fileName);
+	void openDoor(const string& fileName);
 	
 
 private:

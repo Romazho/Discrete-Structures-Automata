@@ -20,7 +20,7 @@ bool Door::isValid(const NextDoor& nextDoorPair) const
 bool Door::readFile() {
 	fstream file(doorName_,ios::in);
 	if (!file.is_open())
-		throw invalid_argument("Cette porte n'existe pas \n");
+		throw  invalid_argument("Cette porte n'existe pas, veuillez entrez une porte valide : ");
 	return readRule(file);
 }
 
@@ -64,7 +64,6 @@ bool Door::readNextDoors(fstream & file)
 		nextDoor = make_pair(door, validation);
 		doorMap_.insert(make_pair(password, nextDoor));
 	}
-	cout << *this;
 	file.close();
 	return true;
 }
@@ -74,13 +73,11 @@ ostream& operator<<(ostream& out, const Door& door)
 	
 	cout << "a. " << door.doorName_ << endl << "b. ";
 	for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it) {
-		cout << "{" << it->first << " , " << it->second.first << " , "; door.isValid(it->second); cout << "}" << endl;
+		cout << "{" << it->first << " , " << it->second.first << " , "; door.isValid(it->second); cout << "}";
 		if (it != door.doorMap_.end())
 			cout << ",";
 	}
-	(door.isPit_) ?cout << "Cette porte est un gouffre, retour à la Porte1" : cout << "Cette porte n'est pas un gouffre";
-
-	cout << endl;
+	cout << "\nc. " << (door.isPit_) ? "Cette porte est un gouffre, retour à la Porte1\n" : "Cette porte n'est pas un gouffre\n";
 	return out;
 }
 
