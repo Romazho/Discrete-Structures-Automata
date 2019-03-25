@@ -7,7 +7,7 @@
 
 #include "agent.h"
 #include <mutex>
-
+using namespace std;
 Agent::Agent(void)
 {
 	//path_.push_back(new Door("Porte1.txt")); // On doit toujours commencer avec la porte 1.

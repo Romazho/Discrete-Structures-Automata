@@ -6,6 +6,7 @@
  ****************************************************************************/
 
 #include "door.h"
+using namespace std;
 
 Door::Door(string doorName, bool isPit): doorName_(doorName), isPit_(isPit) {
 	readFile();

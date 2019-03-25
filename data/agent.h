@@ -14,12 +14,11 @@ public:
 	Agent(void);
 	~Agent(void);
 
-	void openDoor(const string& fileName);
+	void openDoor(const std::string& fileName);
 	
 
 private:
-	vector<Door*> path_;
-
+	std::vector<Door*> path_;
 
 };
 

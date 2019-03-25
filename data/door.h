@@ -5,42 +5,45 @@
  * Description:		Definition de la classe Door
  ****************************************************************************/
 
+
 #ifndef DOOR_H
 #define DOOR_H
+
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <vector>
 #include <string>
+#include "automate.h"
 
-using namespace std;
 using Password = std::string;
-using NextDoor = std::pair<string, bool>; // pair < nom_porte , validité >
+using NextDoor = std::pair<std::string, bool>; // pair < nom_porte , validité >
 
 class Door {
 
 public:
 	Door(void) = default;
-	Door(string doorNumber, bool ispit = true); // Appel readFile()
-	string getDoorName(void) const { return doorName_; } ;
-	vector<string> getRules(void) const { return rules_; };
-	map<Password, NextDoor> getDoorMap(void) const { return doorMap_; };
+	Door(std::string doorNumber, bool ispit = true); // Appel readFile()
+	std::string getDoorName(void) const { return doorName_; } ;
+	std::vector<std::string> getRules(void) const { return rules_; };
+	std::map<Password, NextDoor> getDoorMap(void) const { return doorMap_; };
 
 	bool isValid(const NextDoor& nextDoorPair) const; // Donne si la porte est valide ou pas
 	void validate(NextDoor& nextDoorPair) { nextDoorPair.second = true; }; // Indique que la porte est maintenant valide
 
-	friend ostream& operator<<(ostream&, const Door& door);
+	Password creeAutomate(const std::vector<std::string>& rule);
+
+	friend std::ostream& operator<<(std::ostream&, const Door& door);
 
 private:
-	string doorName_;
+	std::string doorName_;
 	bool isPit_;
 
-	vector<string> rules_;
-	map<Password, NextDoor> doorMap_;
-
+	std::vector<std::string> rules_;
+	std::map<Password, NextDoor> doorMap_;
 	bool readFile(); // OuvrirPorte();
-	bool readRule(fstream& file);
-	bool readNextDoors(fstream & file);
+	bool readRule(std::fstream& file);
+	bool readNextDoors(std::fstream & file);
 };
 
 
