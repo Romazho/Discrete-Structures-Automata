@@ -31,7 +31,6 @@ public:
 	bool isValid(const NextDoor& nextDoorPair) const; // Donne si la porte est valide ou pas
 	void validate(NextDoor& nextDoorPair) { nextDoorPair.second = true; }; // Indique que la porte est maintenant valide
 
-	Password creeAutomate(const std::vector<std::string>& rule);
 
 	friend std::ostream& operator<<(std::ostream&, const Door& door);
 

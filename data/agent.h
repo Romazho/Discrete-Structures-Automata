@@ -6,7 +6,7 @@
  ****************************************************************************/
 #ifndef AGENT_H
 #define AGENT
-#include "door.h"
+#include "automate.h"
 
 class Agent {
 
@@ -15,11 +15,15 @@ public:
 	~Agent(void);
 
 	void openDoor(const std::string& fileName);
-	
+	Automate * generateAutomate(const std::vector<std::string>& rule);
+
+	void clearPath();
+
 
 private:
-	std::vector<Door*> path_;
-
+	std::map<Door*, Automate*> path_;
+	Password password_; // Concatenated password
+	std::vector<Door*> event_;
 };
 
 #endif // ! AGENT_H

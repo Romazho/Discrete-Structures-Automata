@@ -6,15 +6,15 @@
  ****************************************************************************/
 #include "agent.h"
 #include "door.h" // A Enlever
-
+using namespace std;
 void printMenu(void);
 
 int main(void) {
 
-	setlocale(LC_CTYPE, "fra"); //Afficher les caractères francais
+	setlocale(LC_CTYPE, "fra"); //Afficher les caractï¿½res francais
 	char selection = '0';
 
-	cout << "BIENVENUE DANS LE JEUX 'Dont vous êtes le héros' ! \n \n>>> Faite votre sélection parmis le menu suivant. \n";
+	cout << "BIENVENUE DANS LE JEUX 'Dont vous ï¿½tes le hï¿½ros' ! \n \n>>> Faite votre sÃ©lection parmis le menu suivant. \n";
 	Agent agent;
 	while (selection != 'd') {
 
@@ -56,7 +56,7 @@ int main(void) {
 			break;
 
 		default:
-			cout << "\n ATTENTION : Mauvaise sélection.Aucune autre selection que{ a,b,c,d } ne sera valide pour ce menu \n";
+			cout << "\n ATTENTION : Mauvaise sÃ©lection.Aucune autre selection que{ a,b,c,d } ne sera valide pour ce menu \n";
 		}
 	}
 }

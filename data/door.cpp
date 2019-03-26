@@ -12,6 +12,9 @@ Door::Door(string doorName, bool isPit): doorName_(doorName), isPit_(isPit) {
 	readFile();
 }
 
+/*
+ * Permet de determiner et print si la porte est valide
+*/
 bool Door::isValid(const NextDoor& nextDoorPair) const
 {
 	(nextDoorPair.second) ? cout << "valide" : cout << "non valide";
@@ -78,7 +81,7 @@ ostream& operator<<(ostream& out, const Door& door)
 		if (it != door.doorMap_.end())
 			cout << ",";
 	}
-	cout << "\nc. " << (door.isPit_) ? "Cette porte est un gouffre, retour à la Porte1\n" : "Cette porte n'est pas un gouffre\n";
+	cout << "\nc. " << (door.isPit_) ? "Cette porte est un gouffre, retour ï¿½ la Porte1\n" : "Cette porte n'est pas un gouffre\n";
 	return out;
 }
 
