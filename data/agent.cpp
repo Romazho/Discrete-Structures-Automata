@@ -8,27 +8,46 @@
 #include "agent.h"
 #include <mutex>
 using namespace std;
-Agent::Agent(void){}
 
 Agent::~Agent(void)
 {
-	for (pair<Door*,Automate*> it : path_){
-		delete it.second; //Automate*
+	for (Door * it : path_){
+		delete it;
+		it = nullptr;
 	}
-	for(Door* it : event_)
-	{
-		delete it; // Door *
-	}
+	path_.clear();
+
+	delete bossAutomate_;
+	bossAutomate_ = nullptr;
+}
+
+void Agent::enterMaze()
+{
+	inMaze_ = true;
+	openDoor("Porte1.txt");
 }
 
 void Agent::openDoor(const string& fileName)
 {
+	if (!path_.empty())
+	{
+		path_.back()->canOpen(fileName); // if can't open, lunch exception
+	}
 	Door * door = new Door(fileName); // if there is an exception, will never be constructed catch at main
 	Automate * automate = generateAutomate(door->getRules());
-	path_.insert(make_pair(door, automate));
+	path_.push_back(door);
 	event_.push_back(door);
-
 	automate->generatePasswords(door);
+	if(door->isPit())
+	{
+		cout << *door;
+		clearPath();
+		return;
+	}
+	if (fileName != "boss.txt")
+		delete automate;
+	else
+		bossAutomate_ = automate;
 
 	cout << *door;
 }
@@ -38,10 +57,11 @@ Automate* Agent::generateAutomate(const vector<string>& rule)
 	return new Automate(rule);
 }
 
+
 void Agent::clearPath()
 {
-	for (auto it : path_) {
-		delete it.second; //Automate*
-	}
+	delete bossAutomate_;
+	bossAutomate_ = nullptr;
 	path_.clear(); // Remove ptr but the ptr are shared with event_
+	inMaze_ = false;
 }

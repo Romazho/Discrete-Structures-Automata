@@ -14,7 +14,7 @@ int main(void) {
 	setlocale(LC_CTYPE, "fra"); //Afficher les caract�res francais
 	char selection = '0';
 
-	cout << "BIENVENUE DANS LE JEUX 'Dont vous �tes le h�ros' ! \n \n>>> Faite votre sélection parmis le menu suivant. \n";
+	cout << "BIENVENUE DANS LE JEUX 'Dont vous êtes le héros' ! \n \n>>> Faite votre sélection parmis le menu suivant. \n";
 	Agent agent;
 	while (selection != 'd') {
 
@@ -22,24 +22,34 @@ int main(void) {
 		cout << "\nChoix : ";
 		cin >> selection;
 
-
-
 		switch (selection) {
 
 			
 		case 'a': // Entrer dans le lab
-			agent.openDoor("Porte1.txt");
+			if (agent.isInMaze())
+				cout << "Vous êtes déjà dans le labyrinthe";
+			else
+				agent.enterMaze();
 			break;
 
 		case 'b':
+			if (!agent.isInMaze())
+			{
+				cout << "Vous devez tout d'abord entrer dans le labyrinthe";
+				break;
+			}
+
 			cout << "\t\t\n Ouvrir la porte : ";
 			
 			while(true){
-				int doorSelection;
+				string doorSelection;
 				cin >> doorSelection;
 				try
 				{
-					agent.openDoor("Porte" + to_string(doorSelection) + ".txt"); // if exception will ask again
+					if (doorSelection == "boss")
+						agent.openDoor(doorSelection + ".txt");
+					else
+						agent.openDoor("Porte" + doorSelection + ".txt"); // if exception will ask again
 					break; // if no exception
 				}
 				catch (invalid_argument& ia) { cout << ia.what(); }

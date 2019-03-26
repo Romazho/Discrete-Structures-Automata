@@ -14,8 +14,8 @@
 class Automate
 {
   public:
+	Automate(void) = default;
 	Automate(const std::vector<std::string>& rule) : rule_(rule) {};
-	void validateDoors(Door* door, Password password);
 
 	void generatePasswords(Door* door);
 
