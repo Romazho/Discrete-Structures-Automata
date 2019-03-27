@@ -11,14 +11,19 @@ using namespace std;
 
 Agent::~Agent(void)
 {
-	for (Door * it : path_){
+	for (Door * it : path_)
+	{
 		delete it;
 		it = nullptr;
 	}
 	path_.clear();
 
-	delete bossAutomate_;
-	bossAutomate_ = nullptr;
+	for (Automate * it : automates_) 
+	{
+		delete it;
+		it = nullptr;
+	}
+	automates_.clear();
 }
 
 void Agent::enterMaze()
@@ -34,34 +39,30 @@ void Agent::openDoor(const string& fileName)
 		throw invalid_argument("\nCette porte n'est pas valide. Veuillez recommencer : ");; // if can't open, lunch exception
 	}
 	Door * door = new Door(fileName); // if there is an exception, will never be constructed catch at main
-	Automate * automate = generateAutomate(door->getRules());
+
 	path_.push_back(door);
 	event_.push_back(door);
-	automate->generatePasswords(door);
+	automates_.push_back(new Automate(door));
+
 	if(door->isPit())
 	{
 		cout << *door;
 		clearPath();
 		return;
 	}
-	if (fileName != "boss.txt")
-		delete automate;
-	else
-		bossAutomate_ = automate;
 
 	cout << *door;
 }
 
-Automate* Agent::generateAutomate(const vector<string>& rule)
-{
-	return new Automate(rule);
-}
-
-
 void Agent::clearPath()
 {
-	delete bossAutomate_;
-	bossAutomate_ = nullptr;
+	for (Automate * it : automates_)
+	{
+		delete it;
+		it = nullptr;
+	}
+	automates_.clear();
+
 	path_.clear(); // Remove ptr but the ptr are shared with event_
 	inMaze_ = false;
 }

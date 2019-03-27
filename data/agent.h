@@ -17,7 +17,6 @@ public:
 	void enterMaze();
 	bool isInMaze() { return inMaze_; };
 	void openDoor(const std::string& fileName);
-	Automate * generateAutomate(const std::vector<std::string>& rule);
 
 	void clearPath();
 	void printEvent();
@@ -25,7 +24,7 @@ public:
 
 private:
 	std::vector<Door*>path_;
-	Automate * bossAutomate_;
+	std::vector<Automate*> automates_;
 	std::string password_; // Concatenated password
 	std::vector<Door*> event_;
 	bool inMaze_;

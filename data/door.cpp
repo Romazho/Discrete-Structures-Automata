@@ -50,12 +50,16 @@ bool Door::isValid(const NextDoor& nextDoor) const
 
 void Door::validate(std::string& password)
 {
+	doorMap_.at(password)->validity = true;
+	isPit_ = false;
+/*
 	auto it = doorMap_.find(password);
 		if (it != doorMap_.end())
 		{
 			it->second->validity = true;
 			isPit_ = false;
-		}
+	}
+	*/	
 			
 }
 
