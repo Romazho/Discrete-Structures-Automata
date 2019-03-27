@@ -20,6 +20,7 @@ public:
 	Automate * generateAutomate(const std::vector<std::string>& rule);
 
 	void clearPath();
+	void printEvent();
 
 
 private:

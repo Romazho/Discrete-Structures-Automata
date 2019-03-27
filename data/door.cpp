@@ -33,7 +33,7 @@ bool Door::canOpen(const std::string& fileName)
 				return it.second->validity; // Validity
 	}
 
-	throw invalid_argument("\nCette porte n'est pas valide. Veuillez recommencer : ");
+	throw invalid_argument("\nCette porte n'est pas dans l'ensemble des portes présentées. Veuillez recommencer : ");
 }
 
 
@@ -110,7 +110,7 @@ bool Door::readNextDoors(fstream & file)
 ostream& operator<<(ostream& out, const Door& door)
 {
 	
-	cout << "a. " << door.doorName_ << endl << "b. ";
+	cout << "\na. " << door.doorName_ << endl << "b. ";
 	for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it) {
 		cout << "{" << it->first << " , " << it->second->nextDoorName << " , "; door.isValid(*it->second); cout << "}";
 		if (it != door.doorMap_.end())

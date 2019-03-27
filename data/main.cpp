@@ -57,7 +57,7 @@ int main(void) {
 			break;
 
 		case 'c':
-
+				agent.printEvent();
 			break;
 
 		case 'd':

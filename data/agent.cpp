@@ -29,9 +29,9 @@ void Agent::enterMaze()
 
 void Agent::openDoor(const string& fileName)
 {
-	if (!path_.empty())
+	if (!path_.empty() && !path_.back()->canOpen(fileName))
 	{
-		path_.back()->canOpen(fileName); // if can't open, lunch exception
+		throw invalid_argument("\nCette porte n'est pas valide. Veuillez recommencer : ");; // if can't open, lunch exception
 	}
 	Door * door = new Door(fileName); // if there is an exception, will never be constructed catch at main
 	Automate * automate = generateAutomate(door->getRules());
@@ -64,4 +64,15 @@ void Agent::clearPath()
 	bossAutomate_ = nullptr;
 	path_.clear(); // Remove ptr but the ptr are shared with event_
 	inMaze_ = false;
+}
+
+void Agent::printEvent()
+{
+	if (event_.empty() == true)
+	{
+		cout << "Vous devez d'abord ouvrir une porte.";
+	}
+	else {
+
+	}
 }
