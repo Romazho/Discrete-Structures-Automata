@@ -6,7 +6,7 @@
  ****************************************************************************/
 
 #include "agent.h"
-#include <mutex>
+#include <mutex> /// C'est quoi ça ???
 using namespace std;
 
 Agent::~Agent(void)
@@ -26,20 +26,28 @@ Agent::~Agent(void)
 	automates_.clear();
 }
 
+/**
+ * \brief Let the player enter in the maze
+ */
 void Agent::enterMaze()
 {
 	inMaze_ = true;
 	openDoor("Porte1.txt");
 }
 
+/**
+ * \brief Open the door if it is valid, create the associated automate, store them and print the door
+ * \param fileName [const-ref] Name of the file
+ * \return If the door can't be opened throw exception
+ */
 void Agent::openDoor(const string& fileName)
 {
 	if (!path_.empty() && !path_.back()->canOpen(fileName))
 	{
-		throw invalid_argument("\nCette porte n'est pas valide. Veuillez recommencer : ");; // if can't open, lunch exception
+		throw invalid_argument("\nCette porte n'est pas valide. Veuillez recommencer : "); // if can't open, exception
 	}
-	Door * door = new Door(fileName); // if there is an exception, will never be constructed catch at main
 
+	Door * door = new Door(fileName); // if exception, never constructed
 	path_.push_back(door);
 	event_.push_back(door);
 	automates_.push_back(new Automate(door));
@@ -54,6 +62,9 @@ void Agent::openDoor(const string& fileName)
 	cout << *door;
 }
 
+/**
+ * \brief delete the Automates, clear Door::path_ and exit the maze
+ */
 void Agent::clearPath()
 {
 	for (Automate * it : automates_)

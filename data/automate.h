@@ -12,6 +12,20 @@
 #include <algorithm>
 #include <map>
 
+struct Node {
+	Node(const char& id, bool isFinal) : id_(id), isFinal_(isFinal) {};
+	char id_;
+	bool isFinal_;
+	std::vector<Node*> childs_;
+};
+
+struct Edge {
+	Edge(Node* src, Node* dest, char value) :src_(src), dest_(dest), value_(value) {};
+	Node* src_;
+	Node* dest_;
+	char value_; ///traiter le cas du char vers string
+};
+
 class Automate
 {
   public:
@@ -21,25 +35,12 @@ class Automate
 	void validatePasswords();
 
   private:
-	  
-	 Door* door_;
-	 std::vector<std::string> toValidate;
-	 std::multimap<Node*,Edge*> nodeTree;
-
-};
-
-struct Node {
-	Node(const char& id, bool isFinal) : id_(id), isFinal_(isFinal) {};
-	char id_;
-	bool isFinal_;
-	std::vector<Node*> childs_;
-};
-
-struct Edge{
-	Edge(Node* src, Node* dest, char value) :src_(src), dest_(dest), value_(value) {};
-	Node* src_;
-	Node* dest_;
-	char value_; //traiter le cas du char vers string
+	/*Attributes*/
+	Door* door_; // Door associated with the automate
+	std::vector<std::string> toValidate_; //
+	std::multimap<Node*,Edge*> nodeTree_;
+	/*Private functions*/
+	auto findStartIterator(); 
 };
 
 #endif // !AUTOMATE_H

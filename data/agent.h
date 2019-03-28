@@ -5,21 +5,26 @@
  * Description:		Definition de la classe Agent
  ****************************************************************************/
 #ifndef AGENT_H
-#define AGENT
+#define AGENT_H
 #include "automate.h"
 
 class Agent {
 
 public:
+	/*Constructor w/ Destructor*/
 	Agent(bool inMaze=false):inMaze_(inMaze){};
 	~Agent(void);
 
-	void enterMaze();
-	bool isInMaze() { return inMaze_; };
-	void openDoor(const std::string& fileName);
+	/*Getters*/
+	bool isInMaze() const { return inMaze_; };
 
+	/*Setters*/
+	void enterMaze();
+	void openDoor(const std::string& fileName);
 	void clearPath();
-	void printEvent();
+
+	/*Other*/
+	void printEvent(); /// Opérateur ?
 
 
 private:
