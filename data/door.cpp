@@ -15,16 +15,12 @@ using namespace std;
  */
 Door::Door(const string& fileName,const bool& isPit): isPit_(isPit)
 {
-	copy(fileName.begin(), fileName.end() - 4, doorName_); // -4 Because file extention is ".txt"
-
-	for(const auto& value : fileName)
+	for(auto character : fileName)
 	{
-		if (value == '.') // suffix of the door name
+		if (character == '.')
 			break;
-
-		doorName_ += value;
+		doorName_ += character;
 	}
-
 	readFile(fileName);
 }
 
@@ -43,7 +39,7 @@ Door::~Door()
  * \return bool If door can be opened
  * \return If she's not in the set of current NextDoor, throw an exeption
  */
-bool Door::canOpen(const std::string& fileName) const 
+bool Door::canOpen(const string& fileName) const 
 {
 	if (fileName == "Porte1.txt")
 		return true;
@@ -72,7 +68,7 @@ bool Door::isValid(const NextDoor& nextDoor) const
  * \brief Validate the NextDoor with a valid password
  * \param password [const-ref] Valid password given by the Automate 
  */
-void Door::validate(const std::string& password)
+void Door::validate(const string& password)
 {
 	doorMap_.at(password)->validity = true;
 	isPit_ = false;
@@ -110,7 +106,7 @@ void Door::readRule(fstream & file)
 	string line;
 	if (file.peek() == '{') 
 	{
-		for (;;) 
+		while (!file.eof()) 
 		{
 			file >> line;
 			if (line.back() == ',')
@@ -123,13 +119,14 @@ void Door::readRule(fstream & file)
 		}
 
 		readNextDoors(file);
+		return;
 	}
 
-	throw out_of_range("\n CURRENT FILE IS NOT IN THE OPERABLE RANGE OF FUNCTION Door::readRule \n Veuillez recommencer : ");  // Should never happen
+	throw out_of_range("\n CURRENT FILE IS NOT IN THE OPERABLE RANGE OF FUNCTION Door::readRule ");  // Should never happen
 }
 
 /**
- * \brief Read all door's passowords and next doors and store it in Door::doorMap_
+ * \brief Read all door's passowords and next doors and store it win Door::doorMap_
  * \param file [reference] Valid opened file
  * \return 
  */

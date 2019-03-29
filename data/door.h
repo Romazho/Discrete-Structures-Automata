@@ -11,8 +11,8 @@
 
 #include <fstream>
 #include <iostream>
-#include <algorithm>
 #include <assert.h>
+#include <iterator>
 #include <map>
 #include <vector>
 #include <string>

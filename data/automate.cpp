@@ -17,57 +17,69 @@ void Automate::generateAutomate()
 
 	for (size_t i = 1; i < rules.size(); ++i) {
 		//vérifier si le node existe deja sinon on crée un nouveau node.
-		auto it = find_if(nodeTree_.begin(), nodeTree_.end(), [rules, i](Node* node) {node->id_ == rules[i][0]; }); // Possible erreur ici, si oui mettre une pair
-		Node* node = nullptr; 
-		if (it == nodeTree_.end()) {
+		
+		auto it = find_if(nodeTree_.begin(), nodeTree_.end(), [rules, i](pair<Node*, vector<Edge*>> itNode) -> bool {return itNode.first->id_ == rules[i][0]; }); // Possible erreur ici, si oui mettre une pair
+		Node* node = nullptr;
+
+		if (it == nodeTree_.end()) // If no node has that name
+		{
 			node = new Node(rules[i][0], true);
 		}
-		else {
+
+		else // If this node already exist
+		{
 			node = it->first;
 		}
 		
-		if (rules[i].size() == 3) 
+		if (rules[i].size() == 3) // _->
 		{
 			Edge * edge = new Edge(node, nullElem, 00); // In ASCII 00 is null caracter
-			nodeTree_.insert({ node,edge });
-		}
 
-		else if (rules[i].size() == 4)
+			nodeTree_.insert(node,edge);
+		}
+		
+		else if (rules[i].size() == 4) // _->_
 		{
 			Edge * edge = new Edge(node, nullElem, rules[i][3]); // Verifier si final
-			nodeTree_.insert({ node,edge });
+			nodeTree_.insert(node,edge);
 		}
-
-		else
+		
+		else // _->_ _
 		{
-
-			auto it = find_if(nodeTree_.begin(), nodeTree_.end(), [rules, i](Node* node) {node->id_ == rules[i][4]; });
-			Node* child = it->first; // marche pas 
-			if (it == nodeTree_.end()) {
+			auto childIt = find_if(nodeTree_.begin(), nodeTree_.end(), [rules, i](pair<Node*,vector<Edge*>> itNode) {return itNode.first->id_ == rules[i][4]; });
+			//Node* child = it->first; // marche pas 
+			Node* child = nullptr;
+			
+			if (childIt == nodeTree_.end()) 
+			{
 				child = new Node(rules[i][4], true);
 			}
+
+			else
+			{
+				child = childIt->first;
+			}
+			
 			Edge * edge = new Edge(node, child, rules[i][3]); // Verifier si final
 			node->isFinal_ = false;
-			nodeTree_.insert({ node,edge });
+			node->childs_.push_back(child);
+			nodeTree_.insert(node,edge);
+		
 		}
-
 	}
 	
 }
+
+
 
 /**
  * \brief Validate an confirmed password
  * \param password found by the Automate
  */
-void Automate::validatePasswords(const string& password)
-{
-	door_->validate(password);
-}
+//
+//void Automate::validatePasswords(const string& password)
+//{
+//	door_->validate(password);
+//}
 
-/**
- * \brief Find the starting point of the Automate in multimap with id =='S' and return its iterator
- * \return std::multimap<Node*, Edge*>::iterator on the start point of the Automate
- */
-auto Automate::findStartIterator()
-{
-}
+
