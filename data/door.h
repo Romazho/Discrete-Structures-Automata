@@ -39,6 +39,7 @@ public:
 	bool canOpen(const std::string & filename) const;
 	bool isValid(const NextDoor& nextDoorPair) const;
 	bool isPit() const { return isPit_; };
+	std::vector<std::string> getPasswords() { return passwords_; };
 
 	/*Setters*/
 	void validate(const std::string& password);
@@ -52,6 +53,7 @@ private:
 
 	std::vector<std::string> rules_;
 	std::map<std::string, NextDoor*> doorMap_;
+	std::vector<std::string> passwords_;
 
 	void readFile(const std::string& fileName);
 	void readRule(std::fstream& file);

@@ -26,6 +26,7 @@ map<Node*, vector<Edge*>>::iterator NodeTree::find(const char& id)
 
 vector<Edge*> NodeTree::at(const char& id)
 {
+	//ca ne marche pas.
 	auto it = find(id);
 	if (it != nodeTree_.end())
 	{

@@ -150,6 +150,7 @@ void Door::readNextDoors(fstream & file)
 	while (!file.eof()) 
 	{ 
 		file >> password >> doorName;
+		passwords_.push_back(password);
 		doorMap_.insert(make_pair(password, new NextDoor(doorName)));
 	}
 

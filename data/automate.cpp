@@ -12,7 +12,7 @@ void Automate::generateAutomate()
 	//Acces aux rules
 	vector<string> rules = door_->getRules();
 	//Node * starter = new Node('S', false);
-	Node * nullElem = new Node('NE', true);
+	Node * nullElem = new Node('E', true);	//est pas 'NE' car ca prend la derniere lettre...
 
 	for (size_t i = 0; i < rules.size(); ++i) {
 		//vérifier si le node existe deja sinon on crée un nouveau node.
@@ -70,6 +70,12 @@ void Automate::generateAutomate()
 		}
 	}
 
+	//remplissage de toValidate_
+	for (int i = 0; i < door_->getPasswords().size(); i++) {
+		
+		toValidate_.push_back(door_->getPasswords()[i]);
+	}
+
 	validatePasswords();
 }
 
@@ -80,7 +86,6 @@ void Automate::validatePasswords() {
 		validatePassword(toValidate_[i]);
 
 	}
-
 
 }
 
@@ -107,7 +112,9 @@ void Automate::validatePassword(const string& password)
 		//si on a trouvé la lettre alors on cherche la suivante.
 		if (trouvee == true) {
 			//besoin de donner l'id du prochain état ex:A
-			vector<Edge*> startEdges = nodeTree_.at(etatActuel);
+			if (etatActuel != 'E') {
+				startEdges = nodeTree_.at(etatActuel);
+			}
 		}
 		//si on a pas trouvé alors il est inutile de continuer.
 		else {
@@ -119,7 +126,7 @@ void Automate::validatePassword(const string& password)
 
 	//on valide le password si tout est correct
 	//virifier si on se trouve à un état final
-	if (longueurChemin == password.size()) {
+	if ( (longueurChemin == password.size())  && (etatActuel == 'E') ) {
 
 		door_->validate(password);
 	}
@@ -135,9 +142,9 @@ bool Automate::trouverLettre(const char& lettre, int& longueurChemin, vector<Edg
 
 		//si on a trouvé le bon chemin
 		//verifier si la destination est differente de l'état actuelle
-		if ( (startEdges[i]->value_ == lettre) && (startEdges[i]->dest_->id_ != etatActuel) ) {
+		if ( (startEdges[i]->value_ == lettre) && (startEdges[i]->src_->id_ == etatActuel) ) {
 
-			etatActuel = startEdges[i]->src_->id_;
+			etatActuel = startEdges[i]->dest_->id_;
 			longueurChemin++;
 			return true;
 		}
