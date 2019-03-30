@@ -104,7 +104,8 @@ void Door::readFile(const string& fileName)
 void Door::readRule(fstream & file)
 {
 	string line;
-	if (file.peek() == '{') 
+	file >> line;
+	if (line == "{") 
 	{
 		while (!file.eof()) 
 		{

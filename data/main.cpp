@@ -1,9 +1,9 @@
-/****************************************************************************
- * Fichier:			main.cpp
- * Auteurs: 		Kevin Ciliento, Gabriel Tagliabracci et Roman Zhornytskiy
- * Date:			20 mars 2019
- * Description:		Execute le programme
- ****************************************************************************/
+﻿/****************************************************************************
+* Fichier:			main.cpp
+* Auteurs: 		Kevin Ciliento, Gabriel Tagliabracci et Roman Zhornytskiy
+* Date:			20 mars 2019
+* Description:		Execute le programme
+****************************************************************************/
 #include "agent.h"
 #include "door.h" // A Enlever
 using namespace std;
@@ -24,7 +24,7 @@ int main(void) {
 
 		switch (selection) {
 
-			
+
 		case 'a': // Entrer dans le lab
 			if (agent.isInMaze())
 				cout << "Vous êtes déjà dans le labyrinthe";
@@ -40,8 +40,8 @@ int main(void) {
 			}
 
 			cout << "\t\t\n Ouvrir la porte : ";
-			
-			while(true){
+
+			while (true) {
 				string doorSelection;
 				cin >> doorSelection;
 				try
@@ -58,7 +58,7 @@ int main(void) {
 			break;
 
 		case 'c':
-				agent.printEvent();
+			agent.printEvent();
 			break;
 
 		case 'd':

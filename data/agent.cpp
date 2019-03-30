@@ -48,6 +48,8 @@ void Agent::openDoor(const string& fileName)
 	}
 
 	Door * door = new Door(fileName); // if exception, never constructed
+
+	//wtf on skip tout ca...
 	path_.push_back(door);
 	event_.push_back(door);
 	automates_.push_back(new Automate(door));
@@ -78,6 +80,7 @@ void Agent::clearPath()
 	inMaze_ = false;
 }
 
+//à completer///////////////////////////////////////////////////////////////////////////////////////
 void Agent::printEvent()
 {
 	if (event_.empty() == true)

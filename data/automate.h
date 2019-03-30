@@ -10,6 +10,8 @@
 
 #include "door.h"
 #include "nodeTree.h"
+#include <vector>
+#include <string>
 
 class Automate
 {
@@ -17,7 +19,10 @@ class Automate
 	Automate(void) = default;
 	Automate(Door* door) : door_(door) { generateAutomate(); };
 	void generateAutomate();
+
 	void validatePasswords();
+	void validatePassword(const string& password);
+	bool trouverLettre(const char& lettre, int& longueur, vector<Edge*>& startEdges);
 
   private:
 	/*Attributes*/

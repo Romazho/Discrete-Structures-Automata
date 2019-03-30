@@ -35,6 +35,7 @@ public:
 
 	std::vector<Edge*> at(const char& id);
 	std::vector<Edge*> at(Node* node);
+
 	void insert(Node* node, Edge* edge);
 	std::map<Node*, std::vector<Edge*>>::iterator begin();
 	std::map<Node*, std::vector<Edge*>>::iterator end();
