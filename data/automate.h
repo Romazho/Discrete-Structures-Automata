@@ -20,8 +20,9 @@ class Automate
 	void generateAutomate();
 
 	void validatePasswords();
-	void validatePassword(const string& password);
-	bool trouverLettre(const char& lettre, int& longueur, vector<Edge*>& startEdges, char& etatActuel);
+	void validatePassword(const std::string& password);
+	bool trouverLettre(const char& lettre, int& longueur, std::vector<Edge*>& startEdges, char& etatActuel);
+
 
   private:
 	/*Attributes*/
