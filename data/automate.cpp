@@ -107,6 +107,10 @@ void Automate::validatePassword(const string& password)
 		if (trouvee == true) {
 			vector<Edge*> startEdges = nodeTree_.at(password[i]);
 		}
+		//si on a pas trouvé alors il est inutile de continuer.
+		else {
+			break;
+		}
 
 	}
 
