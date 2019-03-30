@@ -93,6 +93,7 @@ void Automate::validatePassword(const string& password)
 {
 	//on commence tousjour de S
 	vector<Edge*> startEdges = nodeTree_.at('S');
+	char etatActuel = 'S';
 
 	int longueurChemin = 0;
 
@@ -101,11 +102,12 @@ void Automate::validatePassword(const string& password)
 	//on parcourt le chemin = password
 	for (int i = 0; i < password.size(); i++) {
 
-		bool trouvee = trouverLettre(password[i], longueurChemin, startEdges);
+		bool trouvee = trouverLettre(password[i], longueurChemin, startEdges, etatActuel);
 
 		//si on a trouvé la lettre alors on cherche la suivante.
 		if (trouvee == true) {
-			vector<Edge*> startEdges = nodeTree_.at(password[i]);
+			//besoin de donner l'id du prochain état ex:A
+			vector<Edge*> startEdges = nodeTree_.at(etatActuel);
 		}
 		//si on a pas trouvé alors il est inutile de continuer.
 		else {
@@ -126,14 +128,16 @@ void Automate::validatePassword(const string& password)
 }
 
 
-bool Automate::trouverLettre(const char& lettre, int& longueurChemin, vector<Edge*>& startEdges) {
+bool Automate::trouverLettre(const char& lettre, int& longueurChemin, vector<Edge*>& startEdges, char& etatActuel) {
 
 	//on parcourt tous les edges du starter
 	for (int i = 0; i < startEdges.size(); i++) {
 
 		//si on a trouvé le bon chemin
-		if ( (startEdges[i]->value_ == lettre) && (startEdges[i]->dest_->id_ != lettre) ) {
+		//verifier si la destination est differente de l'état actuelle
+		if ( (startEdges[i]->value_ == lettre) && (startEdges[i]->dest_->id_ != etatActuel) ) {
 
+			etatActuel = startEdges[i]->src_->id_;
 			longueurChemin++;
 			return true;
 		}
