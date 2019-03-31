@@ -140,21 +140,35 @@ void Door::readNextDoors(fstream & file)
 	string doorName;
 	bool validation = false;
 
-	if (rules_.size() == 1 && rules_.front() == "S->") // Exception : Only if the file has only one starter
-	{ 
-		file >> doorName; password = "";
-		doorMap_.insert(make_pair(password, new NextDoor(doorName,true))); // There is no password, thus it is instantly valid
-		file.close();
-		return;
-	}
+	int pos = file.tellg();
+	pos++;
+	pos++;
+	file.seekg(pos);
 
 	while (!file.eof()) 
 	{ 
-		file >> password >> doorName;
-		passwords_.push_back(password);
+		char test = file.peek();
+
+		if (file.peek() == ' ') {
+			file >> doorName; password = "";
+			if (rules_.front() == "S->") {
+				doorMap_.insert(make_pair(password, new NextDoor(doorName, true)));
+				isPit_ = false;
+				passMap_.insert(make_pair(doorName, password));
+			}
+			else {
+				doorMap_.insert(make_pair(password, new NextDoor(doorName, false)));
+				passMap_.insert(make_pair(doorName, password));
+			}
+		}
+		else
+		{
+			file >> password >> doorName;
+			passwords_.push_back(password);
 		
-		doorMap_.insert(make_pair(password, new NextDoor(doorName)));
-		passMap_.insert(make_pair(doorName, password));
+			doorMap_.insert(make_pair(password, new NextDoor(doorName)));
+			passMap_.insert(make_pair(doorName, password));
+		}
 	}
 
 	file.close();
