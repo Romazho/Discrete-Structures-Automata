@@ -48,8 +48,7 @@ void Agent::openDoor(const string& fileName)
 	{
 		throw invalid_argument("\nCette porte n'est pas valide. Veuillez recommencer : "); // if can't open, exception
 	}
-
-
+	
 	Door * door = new Door(fileName); // if exception, never constructed
 	path_.push_back(door);
 	event_.push_back(door);
