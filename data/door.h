@@ -40,19 +40,28 @@ public:
 	bool isValid(const NextDoor& nextDoorPair) const;
 	bool isPit() const { return isPit_; };
 	std::vector<std::string> getPasswords() { return passwords_; };
+	std::string getChosenDoor() { return chosenDoor_; };
+	std::map<std::string, std::string> getPassMap() { return passMap_; };
 
 	/*Setters*/
 	void validate(const std::string& password);
+	void chooseDoor(std::string doorSelection) {
+		chosenDoor_ = "Porte" + doorSelection;
+	};
 
 	/*Operators*/
 	friend std::ostream& operator<<(std::ostream&, const Door& door);
 
+
+
 private:
 	std::string doorName_;
 	bool isPit_;
+	std::string chosenDoor_;
 
 	std::vector<std::string> rules_;
 	std::multimap<std::string, NextDoor*> doorMap_;
+	std::map<std::string, std::string> passMap_; //prend un string:doorname et retourne string:password
 	std::vector<std::string> passwords_;
 
 	void readFile(const std::string& fileName);

@@ -46,10 +46,13 @@ int main(void) {
 				cin >> doorSelection;
 				try
 				{
-					if (doorSelection == "boss")
+					if (doorSelection == "boss") {
+						agent.concatenatePassword();
 						agent.openDoor(doorSelection + ".txt");
-					else
+					}
+					else {
 						agent.openDoor("Porte" + doorSelection + ".txt"); // if exception will ask again
+					}
 					break; // if no exception
 				}
 				catch (invalid_argument& ia) { cout << ia.what(); }

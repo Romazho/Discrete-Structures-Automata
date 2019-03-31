@@ -79,9 +79,8 @@ void Door::validate(const string& password)
 		{
 			it->second->validity = true;
 			isPit_ = false;
-	}
+		}
 	
-			
 }
 
 /**
@@ -152,7 +151,9 @@ void Door::readNextDoors(fstream & file)
 	{ 
 		file >> password >> doorName;
 		passwords_.push_back(password);
+		
 		doorMap_.insert(make_pair(password, new NextDoor(doorName)));
+		passMap_.insert(make_pair(doorName, password));
 	}
 
 	file.close();

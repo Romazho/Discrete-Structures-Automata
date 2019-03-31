@@ -11,6 +11,8 @@ using namespace std;
 
 Agent::~Agent(void)
 {
+	password_ = "";
+
 	for (Door * it : path_)
 	{
 		delete it;
@@ -47,9 +49,8 @@ void Agent::openDoor(const string& fileName)
 		throw invalid_argument("\nCette porte n'est pas valide. Veuillez recommencer : "); // if can't open, exception
 	}
 
-	Door * door = new Door(fileName); // if exception, never constructed
 
-	//wtf on skip tout ca...
+	Door * door = new Door(fileName); // if exception, never constructed
 	path_.push_back(door);
 	event_.push_back(door);
 	automates_.push_back(new Automate(door));
@@ -62,6 +63,14 @@ void Agent::openDoor(const string& fileName)
 	}
 
 	cout << *door;
+
+
+	//////////////////////ajout pour concanetnate password/////////////////////////////
+	string chosenDoor = fileName.substr(0, fileName.size() - 5);	//on enleve le ".txt"
+	if ( (path_.size() != 0) && (fileName != "Porte1") ) {
+		password_ += path_.back()->getPassMap()[chosenDoor];
+	}
+	
 }
 
 /**
@@ -80,7 +89,7 @@ void Agent::clearPath()
 	inMaze_ = false;
 }
 
-//à completer///////////////////////////////////////////////////////////////////////////////////////
+//à completer////////////////////////////////////////////////////////////////////////////////
 void Agent::printEvent()
 {
 	if (event_.empty() == true)
@@ -90,4 +99,23 @@ void Agent::printEvent()
 	else {
 
 	}
+}
+
+void Agent::concatenatePassword() {
+
+	for (int i = 0; i < path_.size(); i++) {
+
+		string doorName = path_[i]->getChosenDoor();
+
+		//password_ += path_[i]->getDoorMap().find(doorName).nextDoorName;
+
+		//fuck je me suis trompé, ca doit etre doorPassword...
+		auto it = path_[i]->getDoorMap().find(doorName);
+		if (it != path_[i]->getDoorMap().end())
+		{
+			password_ += it->second->nextDoorName;
+			//wait mais ca doit prendre seulement une fois le mot de pass meme s'il y a deux portes
+		}
+	}
+
 }

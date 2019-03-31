@@ -25,6 +25,7 @@ public:
 
 	/*Other*/
 	void printEvent(); /// Opérateur ?
+	void concatenatePassword();
 
 
 private:
