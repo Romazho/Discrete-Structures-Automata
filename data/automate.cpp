@@ -63,7 +63,7 @@ void Automate::generateAutomate()
 			}
 			
 			Edge * edge = new Edge(node, child, rules[i][3]); // Verifier si final	//pas besoin car on est sur que c'est vrai tousjour.
-			node->isFinal_ = false;
+			node->isFinal_ = false;	//pas tousjour vrai, car S-> peut etre avant et ensuite on fait ca ce qui se contredit...
 			node->childs_.push_back(child);
 			nodeTree_.insert(node,edge);
 		
