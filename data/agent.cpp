@@ -93,17 +93,28 @@ void Agent::clearPath()
 void Agent::printEvent()
 {
 	if (event_.empty() == true)
-	{
 		cout << "Vous devez d'abord ouvrir une porte.";
-	}
-	else {
 
+	else 
+	{
+		for(Door* door : event_)
+		{
+
+			if(door->getDoorName() != "Boss")
+				cout << "Porte\n" << *door ;
+
+			else if(door->getDoorName() == "Boss")
+			{
+				
+			}
+		}
 	}
 }
 
 void Agent::concatenatePassword() {
 
-	for (int i = 0; i < path_.size(); i++) {
+	for (int i = 0; i < path_.size(); i++) 
+	{
 
 		string doorName = path_[i]->getChosenDoor();
 

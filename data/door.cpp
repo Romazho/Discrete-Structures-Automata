@@ -167,14 +167,14 @@ void Door::readNextDoors(fstream & file)
  */
 ostream& operator<<(ostream& out, const Door& door)
 {
-	cout << "\na. " << door.doorName_ << endl << "b. ";
+	cout << "Evenement Porte" << "\na. " << door.doorName_ << endl << "b. ";
 
 	for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it) 
 	{
-		cout << "{" << it->first << " , " << it->second->nextDoorName << " , "; door.isValid(*it->second); cout << "}";
+			cout << "{" << it->first << " , " << it->second->nextDoorName << " , "; door.isValid(*it->second); cout << "}";
 
-		if (it != door.doorMap_.end())
-			cout << ",";
+			if (it != door.doorMap_.end())
+				cout << ",";
 	}
 
 	cout << "\nc. " << ((door.isPit_) ? "Cette porte est un gouffre, retour à la Porte1\n" : "Cette porte n'est pas un gouffre\n");

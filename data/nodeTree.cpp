@@ -32,9 +32,10 @@ vector<Edge*> NodeTree::at(const char& id)
 	{
 		return it->second;
 	}
+	vector<Edge*> emptyVect;
+	return emptyVect;
 
-	//vector<Edge*> node = new vector<Edge*>;
-	 //return it;
+ 
 	/// Declarer autre chose pour un autre return	//l'erreur est ici!
 }
 
