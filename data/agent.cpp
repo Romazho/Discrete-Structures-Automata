@@ -84,8 +84,8 @@ void Agent::clearPath()
 		it = nullptr;
 	}
 	automates_.clear();
-
 	path_.clear(); // Remove ptr but the ptr are shared with event_
+	password_.clear();
 	inMaze_ = false;
 }
 
@@ -97,18 +97,31 @@ void Agent::printEvent()
 
 	else 
 	{
-		for(Door* door : event_)
+		for(auto it = event_.begin(), last = event_.begin(); it != event_.end(); ++it)
 		{
+			if((*it)->getDoorName() != "Boss")
+				cout << "Porte\n" << *(*it);
 
-			if(door->getDoorName() != "Boss")
-				cout << "Porte\n" << *door ;
-
-			else if(door->getDoorName() == "Boss")
+			else if((*it)->getDoorName() == "Boss")
 			{
-				
+				printBoss(it, last);
 			}
+			++last; /// Pour pas qu'on soit sur le boss
 		}
 	}
+}
+
+void Agent::printBoss(vector<Door*>::iterator& present, vector<Door*>::iterator& last)
+{
+	cout << "Evenement Boss\na.";
+
+	for(;last != present;++last)
+	{
+		cout << (*last)->getDoorName();
+	}
+
+	cout << endl << **present;
+
 }
 
 void Agent::concatenatePassword() {

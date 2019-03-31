@@ -35,7 +35,7 @@ void Automate::generateAutomate()
 		
 		if (rules[i].size() == 3) // _->
 		{
-			Edge * edge = new Edge(node, nullElem, 00); // In ASCII 00 is null caracter
+			Edge * edge = new Edge(node, nullElem, '0'); // In ASCII 00 is null caracter
 
 			nodeTree_.insert(node,edge);
 		}
@@ -127,7 +127,10 @@ void Automate::validatePassword(const string& password)
 	//on valide le password si tout est correct
 	//virifier si on se trouve à un état final
 	if ( (longueurChemin == password.size())  && (etatActuel == 'E') ) {
-
+		vector<Edge*> Edges = nodeTree_.at('S');
+		auto it = find_if(Edges.begin(), Edges.end(), [](Edge* edge) {return edge->value_ == '0'; });
+		if (it == Edges.end())
+			return;
 		door_->validate(password);
 	}
 
