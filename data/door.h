@@ -35,7 +35,7 @@ public:
 	/*Getters*/
 	std::string getDoorName(void) const { return doorName_; };
 	std::vector<std::string> getRules(void) const { return rules_; };
-	std::map<std::string, NextDoor*> getDoorMap(void) const { return doorMap_; };
+	std::multimap<std::string, NextDoor*> getDoorMap(void) const { return doorMap_; };
 	bool canOpen(const std::string & filename) const;
 	bool isValid(const NextDoor& nextDoorPair) const;
 	bool isPit() const { return isPit_; };
@@ -52,7 +52,7 @@ private:
 	bool isPit_;
 
 	std::vector<std::string> rules_;
-	std::map<std::string, NextDoor*> doorMap_;
+	std::multimap<std::string, NextDoor*> doorMap_;
 	std::vector<std::string> passwords_;
 
 	void readFile(const std::string& fileName);
