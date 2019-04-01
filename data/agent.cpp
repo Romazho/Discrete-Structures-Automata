@@ -87,7 +87,7 @@ void Agent::affronterBoss() {
 
 		string doorName;
 		file >> doorName;
-		if (path_[i]->getDoorName != doorName)
+		if (path_[i]->getDoorName() != doorName)
 			return;
 	}
 
