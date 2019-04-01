@@ -144,11 +144,18 @@ void Automate::validatePassword(const string& password)
 		if (etatActuel == 'S') {
 			vector<Edge*> Edges = nodeTree_.at('S');
 			auto it = find_if(Edges.begin(), Edges.end(), [](Edge* edge) {return edge->value_ == '0'; });
-			if (it != Edges.end())
+			if (it != Edges.end()) {
 				door_->validate(password);
+				lastNode_ = etatActuel;
+			}
+
 		}
-		else
+		else {
+			lastNode_ = etatActuel;
+			//ret
 			door_->validate(password);
+		
+		}
 	}
 
 	

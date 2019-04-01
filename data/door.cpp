@@ -16,13 +16,18 @@ using namespace std;
  */
 Door::Door(const string& fileName,const bool& isPit, const bool& bossDefeated): isPit_(isPit), bossDefeated_(bossDefeated)
 {
-	for(auto character : fileName)
-	{
-		if (character == '.')
-			break;
-		doorName_ += character;
+	if (fileName != "Boss.txt") {
+		for (auto character : fileName)
+		{
+			if (character == '.')
+				break;
+			doorName_ += character;
+		}
+		readFile(fileName);
 	}
-	readFile(fileName);
+	else if (fileName == "Boss.txt") {
+		doorName_ = "Boss";
+	}
 }
 
 Door::~Door()
@@ -208,15 +213,16 @@ ostream& operator<<(ostream& out, const Door& door)
 	{
 		cout << "b. " << door.getPasswords().front() << " P = {"; // Concatenate password
 
-		for(auto rule = door.getRules().begin(); rule != door.getRules().end; ++rule)
+		for(auto rule = door.getRules().begin(); rule != door.getRules().end(); ++rule)
 		{
 			cout << *rule;
 			if (rule != door.getRules().end())
 				cout << ", ";
 		}
 		cout << "}";
+		cout << "\nc. " << ((door.bossDefeated_) ? "L'agent vainc le Boss\n" : "Le Boss vainc l'agent. Retour à la Porte1\n");
 	}
-	cout << "\nc. " << ((door.bossDefeated_) ? "L'agent vainc le Boss\n" : "Le Boss vainc l'agent. Retour à la Porte1\n");
+
 	return out;
 }
 

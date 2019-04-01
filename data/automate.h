@@ -29,6 +29,7 @@ class Automate
 	Door* door_; // Door associated with the automate
 	std::vector<std::string> toValidate_; //était vide
 	NodeTree nodeTree_;
+	char lastNode_;
 	/*Private functions*/
 	
 };

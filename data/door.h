@@ -54,7 +54,6 @@ public:
 	friend std::ostream& operator<<(std::ostream&, const Door& door);
 
 
-
 private:
 	std::string doorName_;
 	bool isPit_;

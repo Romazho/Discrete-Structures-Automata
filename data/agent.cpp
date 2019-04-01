@@ -66,10 +66,32 @@ void Agent::openDoor(const string& fileName)
 
 		//////////////////////ajout pour concanetnate password/////////////////////////////
 		string chosenDoor = fileName.substr(0, fileName.size() - 5);	//on enleve le ".txt"
-		if ((path_.size() != 0) && (fileName != "Porte1")) { /// Pas de .txt ? Ou chosen door?
+		if ((path_.size() != 0) && (chosenDoor != "Porte1")) { /// Pas de .txt ? Ou chosen door?
 			password_ += path_.back()->getPassMap()[chosenDoor];
 		}
 	}
+	else
+	{
+		Door * door = new Door(fileName);
+		event_.push_back(door);
+		affronterBoss();
+	}
+}
+
+void Agent::affronterBoss() {
+
+	fstream file("Boss.txt", ios::in);
+
+	//virifying if the path is right
+	for (int i = 0; i < path_.size() && !file.eof(); i++) {
+
+		string doorName;
+		file >> doorName;
+		if (path_[i]->getDoorName != doorName)
+			return;
+	}
+
+	cocanetenateAutomate();
 }
 
 /**
@@ -99,7 +121,7 @@ void Agent::printEvent()
 		for(auto it = event_.begin(), last = event_.begin(); it != event_.end(); ++it)
 		{
 			if((*it)->getDoorName() != "Boss")
-				cout << "Porte\n" << *(*it);
+				cout << *(*it);
 
 			else if((*it)->getDoorName() == "Boss")
 			{

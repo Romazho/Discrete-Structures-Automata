@@ -46,7 +46,7 @@ int main(void) {
 				cin >> doorSelection;
 				try
 				{
-					if (doorSelection == "boss") {
+					if (doorSelection == "Boss") {
 						agent.openDoor(doorSelection + ".txt");
 					}
 					else {

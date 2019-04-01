@@ -27,6 +27,8 @@ public:
 	void printEvent(); /// Opérateur ?
 	void printBoss(std::vector<Door*>::iterator& it, std::vector<Door*>::iterator& last);
 	void concatenatePassword();
+	void affronterBoss();
+	void cocanetenateAutomate();
 
 
 private:
@@ -35,6 +37,7 @@ private:
 	std::string password_; // Concatenated password
 	std::vector<Door*> event_;
 	bool inMaze_;
+	
 };
 
 #endif // ! AGENT_H
