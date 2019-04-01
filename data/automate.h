@@ -18,10 +18,13 @@ class Automate
 	Automate(void) = default;
 	Automate(Door* door) : door_(door) { generateAutomate(); };
 	void generateAutomate();
+	Door* getDoor() { return door_; };
 
 	void validatePasswords();
+	char getLastNode() const { return lastNode_; };
 	void validatePassword(const std::string& password);
 	bool trouverLettre(const char& lettre, int& longueur, std::vector<Edge*>& startEdges, char& etatActuel);
+	
 
 
   private:

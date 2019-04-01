@@ -28,7 +28,7 @@ public:
 	void printBoss(std::vector<Door*>::iterator& it, std::vector<Door*>::iterator& last);
 	void concatenatePassword();
 	void affronterBoss();
-	void cocanetenateAutomate();
+	void concatenateAutomate();
 
 
 private:

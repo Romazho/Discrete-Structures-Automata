@@ -16,6 +16,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 struct NextDoor
 {
@@ -30,6 +31,7 @@ public:
 	/*Constructors w/ Destructor*/
 	Door(void) = default;
 	Door(const std::string& fileName, const bool& isPit = true, const bool& bossDefeated = false); // Appel readFile()
+	Door(const Door& door);
 	~Door();
 
 	/*Getters*/
@@ -41,14 +43,13 @@ public:
 	bool isPit() const { return isPit_; };
 	std::vector<std::string> getPasswords() { return passwords_; };
 	std::vector<std::string> getPasswords() const { return passwords_; };
-	std::string getChosenDoor() { return chosenDoor_; };
 	std::map<std::string, std::string> getPassMap() { return passMap_; };
+
 
 	/*Setters*/
 	void validate(const std::string& password);
-	void chooseDoor(std::string doorSelection) {
-		chosenDoor_ = "Porte" + doorSelection;
-	};
+	void setRules(const std::vector<std::string>& rules) { rules_ = rules; };
+	void setPassword(std::vector<std::string> password) { passwords_ = password; };
 
 	/*Operators*/
 	friend std::ostream& operator<<(std::ostream&, const Door& door);
@@ -58,7 +59,6 @@ private:
 	std::string doorName_;
 	bool isPit_;
 	bool bossDefeated_;
-	std::string chosenDoor_;
 
 	std::vector<std::string> rules_;
 	std::multimap<std::string, NextDoor*> doorMap_;

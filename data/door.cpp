@@ -9,12 +9,12 @@
 using namespace std;
 
 /**
- * \brief 
- * \param fileName [const-ref] Name of the file/door to open 
+ * \brief
+ * \param fileName [const-ref] Name of the file/door to open
  * \param isPit [const ref]
  * \param bossDefeated [const ref]
  */
-Door::Door(const string& fileName,const bool& isPit, const bool& bossDefeated): isPit_(isPit), bossDefeated_(bossDefeated)
+Door::Door(const string& fileName, const bool& isPit, const bool& bossDefeated) : isPit_(isPit), bossDefeated_(bossDefeated)
 {
 	if (fileName != "Boss.txt") {
 		for (auto character : fileName)
@@ -30,6 +30,18 @@ Door::Door(const string& fileName,const bool& isPit, const bool& bossDefeated): 
 	}
 }
 
+Door::Door(const Door& door) : doorName_(door.doorName_), isPit_(door.isPit_), bossDefeated_(door.bossDefeated_)
+{
+	rules_ = door.rules_;
+	for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it)
+	{
+		doorMap_.insert(make_pair(it->first, new NextDoor(*(it->second))));
+	}
+	passMap_ = door.passMap_;
+	passwords_ = door.passwords_;
+
+}
+
 Door::~Door()
 {
 	for (pair<string, NextDoor*> it : doorMap_)
@@ -41,21 +53,21 @@ Door::~Door()
 
 /**
  * \brief Tell if the door in param fileName can be opened
- * \param fileName [const-ref] name of the file 
+ * \param fileName [const-ref] name of the file
  * \return bool If door can be opened
  * \return If she's not in the set of current NextDoor, throw an exeption
  */
-bool Door::canOpen(const string& fileName) const 
+bool Door::canOpen(const string& fileName) const
 {
 	if (fileName == "Porte1.txt")
 		return true;
-	
+
 	for (const auto& it : doorMap_)
 	{
 		if (fileName.find(it.second->nextDoorName) != std::string::npos)
 			return it.second->validity; // Validity
 	}
-		
+
 	throw invalid_argument("\nCette porte n'est pas dans l'ensemble des portes présentées. Veuillez recommencer : ");
 }
 
@@ -72,7 +84,7 @@ bool Door::isValid(const NextDoor& nextDoor) const
 
 /**
  * \brief Validate the NextDoor with a valid password
- * \param password [const-ref] Valid password given by the Automate 
+ * \param password [const-ref] Valid password given by the Automate
  */
 void Door::validate(const string& password)
 {
@@ -88,23 +100,23 @@ void Door::validate(const string& password)
 			isPit_ = false;
 		}
 		*/
-		
+
 		//bro I don't know how I did it, but it works lol
-		auto range = doorMap_.equal_range(password);
-		for (range.first; range.first != range.second ; range.first++) {
-			range.first->second->validity = true;
-			isPit_ = false;
-		}
-	
+	auto range = doorMap_.equal_range(password);
+	for (range.first; range.first != range.second; range.first++) {
+		range.first->second->validity = true;
+		isPit_ = false;
+	}
+
 }
 
 /**
  * \brief  Read the file and ensure that the file to open is valid
- * \param fileName [const-ref] Name of the file  
+ * \param fileName [const-ref] Name of the file
  */
-void Door::readFile(const string& fileName) 
+void Door::readFile(const string& fileName)
 {
-	fstream file(fileName,ios::in);
+	fstream file(fileName, ios::in);
 
 	if (!file.is_open())
 		throw  invalid_argument("Cette porte n'existe pas, veuillez entrez une porte valide : ");
@@ -120,9 +132,9 @@ void Door::readRule(fstream & file)
 {
 	string line;
 	file >> line;
-	if (line == "{") 
+	if (line == "{")
 	{
-		while (!file.eof()) 
+		while (!file.eof())
 		{
 			file >> line;
 			if (line.back() == ',')
@@ -144,7 +156,7 @@ void Door::readRule(fstream & file)
 /**
  * \brief Read all door's passowords and next doors and store it win Door::doorMap_
  * \param file [reference] Valid opened file
- * \return 
+ * \return
  */
 void Door::readNextDoors(fstream & file)
 {
@@ -159,8 +171,8 @@ void Door::readNextDoors(fstream & file)
 	pos++;
 	file.seekg(pos);
 
-	while (!file.eof()) 
-	{ 
+	while (!file.eof())
+	{
 		char test = file.peek();
 
 		if (file.peek() == ' ') {
@@ -179,7 +191,7 @@ void Door::readNextDoors(fstream & file)
 		{
 			file >> password >> doorName;
 			passwords_.push_back(password);
-		
+
 			doorMap_.insert(make_pair(password, new NextDoor(doorName)));
 			passMap_.insert(make_pair(doorName, password));
 		}
@@ -197,23 +209,23 @@ void Door::readNextDoors(fstream & file)
 ostream& operator<<(ostream& out, const Door& door)
 {
 	cout << "Evenement Porte" << "\na. " << door.doorName_ << endl << "b. ";
-	if(door.getDoorName() != "Boss"){
-		for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it) 
+	if (door.getDoorName() != "Boss") {
+		for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it)
 		{
-				cout << "{" << it->first << " , " << it->second->nextDoorName << " , "; door.isValid(*it->second); cout << "}";
+			cout << "{" << it->first << " , " << it->second->nextDoorName << " , "; door.isValid(*it->second); cout << "}";
 
-				if (it != door.doorMap_.end())
-					cout << ",";
+			if (it != door.doorMap_.end())
+				cout << ",";
 		}
 
-	cout << "\nc. " << ((door.isPit_) ? "Cette porte est un gouffre, retour à la Porte1\n" : "Cette porte n'est pas un gouffre\n");
+		cout << "\nc. " << ((door.isPit_) ? "Cette porte est un gouffre, retour à la Porte1\n" : "Cette porte n'est pas un gouffre\n");
 	}
 
 	else
 	{
 		cout << "b. " << door.getPasswords().front() << " P = {"; // Concatenate password
 
-		for(auto rule = door.getRules().begin(); rule != door.getRules().end(); ++rule)
+		for (auto rule = door.getRules().begin(); rule != door.getRules().end(); ++rule)
 		{
 			cout << *rule;
 			if (rule != door.getRules().end())
