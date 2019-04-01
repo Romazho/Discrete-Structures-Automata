@@ -108,6 +108,7 @@ void Agent::concatenateAutomate()
 
 	vector<string> newRule = path_[0]->getRules(); // First door rules are
 	vector<Door*> tmpPath;
+	char lastStarterValue;
 
 	for (auto door : path_)
 	{
@@ -119,15 +120,6 @@ void Agent::concatenateAutomate()
 	{
 		for (size_t j = 0; j < tmpPath[i]->getRules().size(); ++j) // For each production rule of this door
 		{
-			for (size_t k = 0; k < tmpPath[i]->getRules()[j].size(); ++k) // For each character of this production rule of this door
-			{
-				if (tmpPath[i]->getRules()[j][k] == automates_[i - 1]->getLastNode()) // Remove doubles
-				{
-					tmpPath[i]->getRules()[j][k] = newStarter;
-					hasChanged = true;
-				}
-			}
-
 			for (size_t k = 0; k < tmpPath[i]->getRules()[j].size(); ++k) // Last node (final state) of precedent automate is the new starter of current automate
 			{
 				if (tmpPath[i]->getRules()[j][k] == 'S')
@@ -135,6 +127,23 @@ void Agent::concatenateAutomate()
 					tmpPath[i]->getRules()[j][k] = automates_[i - 1]->getLastNode();
 				}
 			}
+
+			for (size_t k = 0; k < tmpPath[i]->getRules()[j].size(); ++k) // For each character of this production rule of this door
+			{
+				if (tmpPath[i]->getRules()[j][k] == automates_[i - 1]->getLastNode()) // Remove doubles
+				{
+					/*
+					if(automates_[i - 1]->getLastNode() != 'S')
+					{ 
+						tmpPath[i]->getRules()[j][k] = newStarter;
+						hasChanged = true;
+						break;
+					}
+					*/
+				}
+			}
+
+
 		}
 
 		if (hasChanged) // Change value if there was a doublon
