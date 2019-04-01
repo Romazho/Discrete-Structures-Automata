@@ -138,7 +138,7 @@ void Automate::validatePassword(const string& password)
 
 
 	//on valide le password si tout est correct
-	//virifier si on se trouve à un état final
+	//verifier si on se trouve à un état final
 
 	if ( (longueurChemin == password.size())  && ((etatActuel == 'E') || (etatActuel == 'S')) ) {
 
