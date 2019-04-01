@@ -208,8 +208,9 @@ void Door::readNextDoors(fstream & file)
  */
 ostream& operator<<(ostream& out, const Door& door)
 {
-	cout << "Evenement Porte" << "\na. " << door.doorName_ << endl << "b. ";
+
 	if (door.getDoorName() != "Boss") {
+		cout << "Evenement Porte" << "\na. " << door.doorName_ << endl << "b. ";
 		for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it)
 		{
 			cout << "{" << it->first << " , " << it->second->nextDoorName << " , "; door.isValid(*it->second); cout << "}";
@@ -223,12 +224,19 @@ ostream& operator<<(ostream& out, const Door& door)
 
 	else
 	{
-		cout << "b. " << door.getPasswords().front() << " P = {"; // Concatenate password
-
+		cout << door.doorName_ << endl << "b. " << door.getPasswords().front() << " P = {"; // Concatenate password
+		/*
 		for (auto rule = door.getRules().begin(); rule != door.getRules().end(); ++rule)
 		{
-			cout << *rule;
+			cout << (*rule);
 			if (rule != door.getRules().end())
+				cout << ", ";
+		}
+	*/
+		for (size_t i = 0; i < door.getRules().size(); ++i)
+		{
+			cout << (door.getRules() [i]);
+			if (i != (door.getRules().size() - 1))
 				cout << ", ";
 		}
 		cout << "}";

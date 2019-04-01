@@ -48,6 +48,7 @@ public:
 
 	/*Setters*/
 	void validate(const std::string& password);
+	void validateBossDoor() { bossDefeated_ = true; };
 	void setRules(const std::vector<std::string>& rules) { rules_ = rules; };
 	void setPassword(std::vector<std::string> password) { passwords_ = password; };
 

@@ -75,7 +75,10 @@ void Agent::openDoor(const string& fileName)
 		Door * door = new Door(fileName);
 		event_.push_back(door);
 		affronterBoss();
+		printBoss();
+		cout << *door;
 	}
+	
 }
 
 void Agent::affronterBoss() {
@@ -88,7 +91,11 @@ void Agent::affronterBoss() {
 		string doorName;
 		file >> doorName;
 		if (path_[i]->getDoorName() != doorName)
+		{
+			cout << " Le path n'est pas le bon";
 			return;
+		}
+			
 	}
 
 	concatenateAutomate();
@@ -144,9 +151,10 @@ void Agent::concatenateAutomate()
 		delete door;
 	}
 	event_.back()->setRules(newRule);
-	vector<string> why;
-	why.push_back(password_);
-	event_.back()->setPassword(why);
+	vector<string> uniqueConcatenatedPassword;
+	uniqueConcatenatedPassword.push_back(password_);
+	event_.back()->setPassword(uniqueConcatenatedPassword);
+	automates_.push_back(new Automate(event_.back())); // Add Boss Door
 }
 
 /**
@@ -187,13 +195,25 @@ void Agent::printEvent()
 	}
 }
 
+void Agent::printBoss()
+{
+	cout << "Evenement Boss\na.";
+
+	for (auto it = path_.begin(); it != path_.end(); ++it)
+	{
+		cout << (*it)->getDoorName() << " ";
+	}
+
+	cout << endl << *path_.back();
+}
+
 void Agent::printBoss(vector<Door*>::iterator& present, vector<Door*>::iterator& last)
 {
 	cout << "Evenement Boss\na.";
 
 	for (; last != present; ++last)
 	{
-		cout << (*last)->getDoorName();
+		cout << (*last)->getDoorName() << " ";
 	}
 
 	cout << endl << **present;

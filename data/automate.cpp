@@ -88,11 +88,17 @@ void Automate::generateAutomate()
 }
 
 void Automate::validatePasswords() {
+	if(door_->getDoorName() != "Boss")
+	{
+		for (int i = 0; i < toValidate_.size(); i++) {
 
-	for (int i = 0; i < toValidate_.size(); i++) {
+			validatePassword(toValidate_[i]);
 
-		validatePassword(toValidate_[i]);
-
+		}
+	}
+	else
+	{
+		validatePassword(door_->getPasswords().front());
 	}
 
 }
@@ -146,7 +152,7 @@ void Automate::validatePassword(const string& password)
 			vector<Edge*> Edges = nodeTree_.at('S');
 			auto it = find_if(Edges.begin(), Edges.end(), [](Edge* edge) {return edge->value_ == '0'; });
 			if (it != Edges.end()) {
-				door_->validate(password);
+				door_->getDoorName() == "Boss" ? door_->validateBossDoor() : door_->validate(password);
 				lastNode_ = etatActuel;
 			}
 
@@ -154,7 +160,7 @@ void Automate::validatePassword(const string& password)
 		else {
 			
 			//retourner le node avant 'E'
-			door_->validate(password);
+			door_->getDoorName() == "Boss" ? door_->validateBossDoor() : door_->validate(password);
 			lastNode_ = etatPrecedent;
 		
 		}
