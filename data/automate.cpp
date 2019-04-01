@@ -111,6 +111,7 @@ void Automate::validatePassword(const string& password)
 	//on commence tousjour de S
 	vector<Edge*> startEdges = nodeTree_.at('S');
 	char etatActuel = 'S';
+	char etatPrecedent = 'S';
 
 	int longueurChemin = 0;
 
@@ -119,7 +120,7 @@ void Automate::validatePassword(const string& password)
 	//on parcourt le chemin = password
 	for (int i = 0; i < password.size(); i++) {
 
-		bool trouvee = trouverLettre(password[i], longueurChemin, startEdges, etatActuel);
+		bool trouvee = trouverLettre(password[i], longueurChemin, startEdges, etatActuel, etatPrecedent);
 
 		//si on a trouvé la lettre alors on cherche la suivante.
 		if (trouvee == true) {
@@ -151,9 +152,10 @@ void Automate::validatePassword(const string& password)
 
 		}
 		else {
-			lastNode_ = etatActuel;
-			//ret
+			
+			//retourner le node avant 'E'
 			door_->validate(password);
+			lastNode_ = etatPrecedent;
 		
 		}
 	}
@@ -162,7 +164,7 @@ void Automate::validatePassword(const string& password)
 }
 
 
-bool Automate::trouverLettre(const char& lettre, int& longueurChemin, vector<Edge*>& startEdges, char& etatActuel) {
+bool Automate::trouverLettre(const char& lettre, int& longueurChemin, vector<Edge*>& startEdges, char& etatActuel, char& etatPrecedent) {
 
 	//on parcourt tous les edges du starter
 	for (int i = 0; i < startEdges.size(); i++) {
@@ -171,6 +173,7 @@ bool Automate::trouverLettre(const char& lettre, int& longueurChemin, vector<Edg
 		//verifier si la destination est differente de l'état actuelle
 		if ( (startEdges[i]->value_ == lettre) && (startEdges[i]->src_->id_ == etatActuel) ) {
 
+			etatPrecedent = startEdges[i]->src_->id_;
 			etatActuel = startEdges[i]->dest_->id_;
 			longueurChemin++;
 			return true;
