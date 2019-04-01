@@ -11,16 +11,15 @@ void Automate::generateAutomate()
 {
 	//Acces aux rules
 	vector<string> rules = door_->getRules();
-	//Node * starter = new Node('S', false);
-	Node * nullElem = new Node('E', true);	//est pas 'NE' car ca prend la derniere lettre...
+	Node * nullElem = new Node('E', true);	 
 
-	for (size_t i = 0; i < rules.size(); ++i) {
-		//vérifier si le node existe deja sinon on crée un nouveau node.
-		{//il serait plus intelligent de vérifier si S->_A par exemple et si oui alors on crée le node A
-		//car si S ne mene pas à A, il est alors inutile de créer le node A. mais je ne pense pas que
-		//ca change quelque chose à la fin...
-		}
-		auto it = find_if(nodeTree_.begin(), nodeTree_.end(), [rules, i](pair<Node*, vector<Edge*>> itNode) -> bool {return itNode.first->id_ == rules[i][0]; }); // Possible erreur ici, si oui mettre une pair
+	for (size_t i = 0; i < rules.size(); ++i) 
+	{
+		auto it = find_if(nodeTree_.begin(), nodeTree_.end(), [rules, i](pair<Node*, vector<Edge*>> itNode) -> bool // Find 
+		{
+			return itNode.first->id_ == rules[i][0];
+		});
+
 		Node* node = nullptr;
 
 		if (it == nodeTree_.end()) // If no node has that name
@@ -32,75 +31,71 @@ void Automate::generateAutomate()
 		{
 			node = it->first;
 		}
-		
-		if (rules[i].size() == 3) // _->
-		{
-			Edge * edge = new Edge(node, nullElem, '0'); // In ASCII 00 is null caracter
 
-			nodeTree_.insert(node,edge);
-		}
-		
-		else if (rules[i].size() == 4) // _->_
+		switch(rules[i].size())
 		{
-			Edge * edge = new Edge(node, nullElem, rules[i][3]); // Verifier si final	//pas besoin car on est sur que c'est vrai tousjour.
-			nodeTree_.insert(node,edge);
-		}
-		
-		else // _->_ _
-		{
-			auto childIt = find_if(nodeTree_.begin(), nodeTree_.end(), [rules, i](pair<Node*,vector<Edge*>> itNode) {return itNode.first->id_ == rules[i][4]; });
-			//Node* child = it->first; // marche pas 
-			Node* child = nullptr;
-			
-			if (childIt == nodeTree_.end()) 
+		case 3: // _->
 			{
-				child = new Node(rules[i][4], true);
+				Edge * edge = new Edge(node, nullElem, '0'); // In ASCII 00 is null caracter
+				nodeTree_.insert(node, edge);
+				break;
 			}
-
-			else
+		case 4: // _->_
 			{
-				child = childIt->first;
+				Edge * edge = new Edge(node, nullElem, rules[i][3]); 
+				nodeTree_.insert(node, edge);
+				break;
 			}
-			
-			Edge * edge = new Edge(node, child, rules[i][3]); // Verifier si final	//pas besoin car on est sur que c'est vrai tousjour.
-			//verifier si node a un child
-			//for(int i=0;i<node->childs_.size();i++)
-			//{
-			//	if (node->childs_[i]->id_ != 'E' ) {
+		case 5: // _->_ _
+			{
+				auto childIt = find_if(nodeTree_.begin(), nodeTree_.end(), [rules, i](pair<Node*, vector<Edge*>> itNode)-> bool
+				{
+					return itNode.first->id_ == rules[i][4];
+				});
+				Node* child = nullptr;
 
-			//	}
-			//}
-			
-			node->isFinal_ = false;	//pas tousjour vrai, car S-> peut etre avant et ensuite on fait ca ce qui se contredit...
-			node->childs_.push_back(child);
-			nodeTree_.insert(node,edge);
-		
+				if (childIt == nodeTree_.end())
+				{
+					child = new Node(rules[i][4], true);
+				}
+
+				else
+				{
+					child = childIt->first;
+				}
+
+				Edge * edge = new Edge(node, child, rules[i][3]); 
+
+				node->isFinal_ = false;	
+				node->childs_.push_back(child);
+				nodeTree_.insert(node, edge);
+				break;
+			}
 		}
 	}
 
-	//remplissage de toValidate_
-	for (int i = 0; i < door_->getPasswords().size(); i++) {
-		
+	for (size_t i = 0; i < door_->getPasswords().size(); i++) 
+	{
 		toValidate_.push_back(door_->getPasswords()[i]);
 	}
 
 	validatePasswords();
 }
 
-void Automate::validatePasswords() {
+void Automate::validatePasswords() 
+{
 	if(door_->getDoorName() != "Boss")
 	{
-		for (int i = 0; i < toValidate_.size(); i++) {
-
+		for (size_t i = 0; i < toValidate_.size(); i++) 
+		{
 			validatePassword(toValidate_[i]);
-
 		}
 	}
+
 	else
 	{
 		validatePassword(door_->getPasswords().front());
 	}
-
 }
 
 /**
@@ -110,12 +105,11 @@ void Automate::validatePasswords() {
 //on valide un password
 void Automate::validatePassword(const string& password)
 {
-	//car password est deja validé dans door.
-	if (password == "")
+	//Password already validated when the door was built
+	if (password.empty())
 		return;
 
-	//on commence tousjour de S
-	vector<Edge*> startEdges = nodeTree_.at('S');
+	vector<Edge*> startEdges = nodeTree_.at('S'); // Always start from 'S'
 	char etatActuel = 'S';
 	char etatPrecedent = 'S';
 
@@ -124,7 +118,7 @@ void Automate::validatePassword(const string& password)
 	//fonction qui parcourt le chemin qui prend en paramètre la première lettre
 	//et qui retourne un bool
 	//on parcourt le chemin = password
-	for (int i = 0; i < password.size(); i++) {
+	for (size_t i = 0; i < password.size(); i++) {
 
 		bool trouvee = trouverLettre(password[i], longueurChemin, startEdges, etatActuel, etatPrecedent);
 
@@ -173,7 +167,7 @@ void Automate::validatePassword(const string& password)
 bool Automate::trouverLettre(const char& lettre, int& longueurChemin, vector<Edge*>& startEdges, char& etatActuel, char& etatPrecedent) {
 
 	//on parcourt tous les edges du starter
-	for (int i = 0; i < startEdges.size(); i++) {
+	for (size_t i = 0; i < startEdges.size(); i++) {
 
 		//si on a trouvé le bon chemin
 		//verifier si la destination est differente de l'état actuelle

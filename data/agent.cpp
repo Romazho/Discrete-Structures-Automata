@@ -64,29 +64,30 @@ void Agent::openDoor(const string& fileName)
 
 		cout << *door;
 
-		//////////////////////ajout pour concanetnate password/////////////////////////////
-		string chosenDoor = fileName.substr(0, fileName.size() - 5);	//on enleve le ".txt"
+		string chosenDoor = fileName.substr(0, fileName.size() - 4);	//on enleve le ".txt"
 		if ((path_.size() != 0) && (chosenDoor != "Porte1")) { /// Pas de .txt ? Ou chosen door?
-			password_ += path_.back()->getPassMap()[chosenDoor];
+			password_ += path_[path_.size()-2]->getPassMap()[chosenDoor];
 		}
 	}
 	else
 	{
 		Door * door = new Door(fileName);
 		event_.push_back(door);
-		affronterBoss();
+
+		password_ += path_.back()->getPassMap()[door->getDoorName()];
+		challengeBoss();
 		printBoss();
-		cout << *door;
+		clearPath();
 	}
 	
 }
 
-void Agent::affronterBoss() {
+void Agent::challengeBoss() {
 
 	fstream file("Boss.txt", ios::in);
 
 	//virifying if the path is right
-	for (int i = 0; i < path_.size() && !file.eof(); i++) {
+	for (size_t i = 0; i < path_.size() && !file.eof(); i++) {
 
 		string doorName;
 		file >> doorName;
@@ -95,7 +96,6 @@ void Agent::affronterBoss() {
 			cout << " Le path n'est pas le bon";
 			return;
 		}
-			
 	}
 
 	concatenateAutomate();
@@ -117,44 +117,53 @@ void Agent::concatenateAutomate()
 
 	for (size_t i = 1; i < tmpPath.size(); ++i) // For each door
 	{
-		for (size_t j = 0; j < tmpPath[i]->getRules().size(); ++j) // For each production rule
+		for (size_t j = 0; j < tmpPath[i]->getRules().size(); ++j) // For each production rule of this door
 		{
-			for (size_t k = 0; k < tmpPath[i]->getRules()[j].size(); ++k) // For each caracter no doubles
+			for (size_t k = 0; k < tmpPath[i]->getRules()[j].size(); ++k) // For each character of this production rule of this door
 			{
-				if (tmpPath[i]->getRules()[j][k] == automates_[i - 1]->getLastNode())
+				if (tmpPath[i]->getRules()[j][k] == automates_[i - 1]->getLastNode()) // Remove doubles
 				{
 					tmpPath[i]->getRules()[j][k] = newStarter;
 					hasChanged = true;
 				}
 			}
 
-			for (size_t k = 0; k < tmpPath[i]->getRules()[j].size(); ++k) // For each caracter no doubles
+			for (size_t k = 0; k < tmpPath[i]->getRules()[j].size(); ++k) // Last node (final state) of precedent automate is the new starter of current automate
 			{
 				if (tmpPath[i]->getRules()[j][k] == 'S')
 				{
 					tmpPath[i]->getRules()[j][k] = automates_[i - 1]->getLastNode();
 				}
 			}
-
-			if (hasChanged == true)
-			{
-				newStarter++;
-				hasChanged = false;
-			}
 		}
-		for (size_t j = 0; j < tmpPath[i]->getRules().size(); ++j)
-			newRule.push_back(tmpPath[i]->getRules()[j]);
-	}
 
-	for (auto door : tmpPath)
-	{
-		delete door;
+		if (hasChanged) // Change value if there was a doublon
+		{
+			newStarter++; 
+			hasChanged = false;
+		}
+
+		for (size_t j = 0; j < tmpPath[i]->getRules().size(); ++j) // For each production rule of this door
+		{
+			newRule.push_back(tmpPath[i]->getRules()[j]); // Add to the tmp rule vector
+		}
+			
 	}
-	event_.back()->setRules(newRule);
-	vector<string> uniqueConcatenatedPassword;
-	uniqueConcatenatedPassword.push_back(password_);
-	event_.back()->setPassword(uniqueConcatenatedPassword);
-	automates_.push_back(new Automate(event_.back())); // Add Boss Door
+	{ // Clear memory from the tmp path
+		for (auto door : tmpPath) 
+		{
+			delete door;
+			door = nullptr;
+		}
+		tmpPath.clear();
+	}
+	{ // Build the Boss Door 
+		event_.back()->setRules(newRule);
+		vector<string> uniqueConcatenatedPassword;
+		uniqueConcatenatedPassword.push_back(password_);
+		event_.back()->setPassword(uniqueConcatenatedPassword);
+		automates_.push_back(new Automate(event_.back())); // Add Boss Door
+	}
 }
 
 /**
@@ -204,7 +213,7 @@ void Agent::printBoss()
 		cout << (*it)->getDoorName() << " ";
 	}
 
-	cout << endl << *path_.back();
+	cout << endl << *event_.back();
 }
 
 void Agent::printBoss(vector<Door*>::iterator& present, vector<Door*>::iterator& last)
@@ -219,23 +228,33 @@ void Agent::printBoss(vector<Door*>::iterator& present, vector<Door*>::iterator&
 	cout << endl << **present;
 
 }
-//
-//void Agent::concatenatePassword() {
-//
-//	for (int i = 0; i < path_.size(); i++)
-//	{
-//
-//		string doorName = path_[i]->getChosenDoor();
-//
-//		//password_ += path_[i]->getDoorMap().find(doorName).nextDoorName;
-//
-//		//fuck je me suis trompé, ca doit etre doorPassword...
-//		auto it = path_[i]->getDoorMap().find(doorName);
-//		if (it != path_[i]->getDoorMap().end())
-//		{
-//			password_ += it->second->nextDoorName;
-//			//wait mais ca doit prendre seulement une fois le mot de pass meme s'il y a deux portes
-//		}
-//	}
-//
-//}
+
+void Agent::concatenatePassword() 
+{
+/*
+	for (int i = 0; i < path_.size(); i++)
+	{
+
+		string doorName = path_[i]->getChosenDoor();
+
+		//password_ += path_[i]->getDoorMap().find(doorName).nextDoorName;
+
+		//fuck je me suis trompé, ca doit etre doorPassword...
+		auto it = path_[i]->getDoorMap().find(doorName);
+		if (it != path_[i]->getDoorMap().end())
+		{
+			password_ += it->second->nextDoorName;
+			//wait mais ca doit prendre seulement une fois le mot de pass meme s'il y a deux portes
+		}
+	}
+	*/
+	/*
+	for(size_t i = 0; i < path_.size();++i)
+	{
+		if (i != path_.size() path_[i] != "Porte1")
+		{
+			password_ += door->getPassMap().find()
+		}
+	}
+	*/
+}

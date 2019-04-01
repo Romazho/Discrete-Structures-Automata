@@ -37,12 +37,13 @@ public:
 	/*Getters*/
 	std::string getDoorName(void) const { return doorName_; };
 	std::vector<std::string> getRules(void) const { return rules_; };
+	std::vector<std::string>& getRules(void) { return rules_; };
 	std::multimap<std::string, NextDoor*> getDoorMap(void) const { return doorMap_; };
 	bool canOpen(const std::string & filename) const;
 	bool isValid(const NextDoor& nextDoorPair) const;
 	bool isPit() const { return isPit_; };
-	std::vector<std::string> getPasswords() { return passwords_; };
-	std::vector<std::string> getPasswords() const { return passwords_; };
+	std::vector<std::string> getPasswords(void) { return passwords_; };
+	std::vector<std::string> getPasswords(void) const { return passwords_; };
 	std::map<std::string, std::string> getPassMap() { return passMap_; };
 
 
