@@ -23,7 +23,7 @@ class Automate
 	void validatePasswords();
 	char getLastNode() const { return lastNode_; };
 	void validatePassword(const std::string& password);
-	bool trouverLettre(const char& lettre, int& longueur, std::vector<Edge*>& startEdges, char& etatActuel);
+	bool trouverLettre(const char& lettre, int& longueur, std::vector<Edge*>& startEdges, char& etatActuel, char& etatPrecedent);
 	
 
 
