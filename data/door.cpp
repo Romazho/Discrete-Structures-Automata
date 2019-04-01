@@ -12,8 +12,9 @@ using namespace std;
  * \brief 
  * \param fileName [const-ref] Name of the file/door to open 
  * \param isPit [const ref]
+ * \param bossDefeated [const ref]
  */
-Door::Door(const string& fileName,const bool& isPit): isPit_(isPit)
+Door::Door(const string& fileName,const bool& isPit, const bool& bossDefeated): isPit_(isPit), bossDefeated_(bossDefeated)
 {
 	for(auto character : fileName)
 	{
@@ -191,16 +192,31 @@ void Door::readNextDoors(fstream & file)
 ostream& operator<<(ostream& out, const Door& door)
 {
 	cout << "Evenement Porte" << "\na. " << door.doorName_ << endl << "b. ";
+	if(door.getDoorName() != "Boss"){
+		for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it) 
+		{
+				cout << "{" << it->first << " , " << it->second->nextDoorName << " , "; door.isValid(*it->second); cout << "}";
 
-	for (auto it = door.doorMap_.begin(); it != door.doorMap_.end(); ++it) 
-	{
-			cout << "{" << it->first << " , " << it->second->nextDoorName << " , "; door.isValid(*it->second); cout << "}";
-
-			if (it != door.doorMap_.end())
-				cout << ",";
-	}
+				if (it != door.doorMap_.end())
+					cout << ",";
+		}
 
 	cout << "\nc. " << ((door.isPit_) ? "Cette porte est un gouffre, retour à la Porte1\n" : "Cette porte n'est pas un gouffre\n");
+	}
+
+	else
+	{
+		cout << "b. " << door.getPasswords().front() << " P = {"; // Concatenate password
+
+		for(auto rule = door.getRules().begin(); rule != door.getRules().end; ++rule)
+		{
+			cout << *rule;
+			if (rule != door.getRules().end())
+				cout << ", ";
+		}
+		cout << "}";
+	}
+	cout << "\nc. " << ((door.bossDefeated_) ? "L'agent vainc le Boss\n" : "Le Boss vainc l'agent. Retour à la Porte1\n");
 	return out;
 }
 

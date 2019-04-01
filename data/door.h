@@ -29,7 +29,7 @@ class Door {
 public:
 	/*Constructors w/ Destructor*/
 	Door(void) = default;
-	Door(const std::string& fileName, const bool& isPit = true); // Appel readFile()
+	Door(const std::string& fileName, const bool& isPit = true, const bool& bossDefeated = false); // Appel readFile()
 	~Door();
 
 	/*Getters*/
@@ -40,6 +40,7 @@ public:
 	bool isValid(const NextDoor& nextDoorPair) const;
 	bool isPit() const { return isPit_; };
 	std::vector<std::string> getPasswords() { return passwords_; };
+	std::vector<std::string> getPasswords() const { return passwords_; };
 	std::string getChosenDoor() { return chosenDoor_; };
 	std::map<std::string, std::string> getPassMap() { return passMap_; };
 
@@ -57,6 +58,7 @@ public:
 private:
 	std::string doorName_;
 	bool isPit_;
+	bool bossDefeated_;
 	std::string chosenDoor_;
 
 	std::vector<std::string> rules_;
