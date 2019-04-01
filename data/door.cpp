@@ -74,10 +74,19 @@ void Door::validate(const string& password)
 	//auto range = doorMap_.equal_range(password);
 	//isPit_ = false;
 
-	auto it = doorMap_.find(password);
+	/*auto it = doorMap_.find(password);
+	//il faut valider pour toutes les portes qui ont ce password...
 		if (it != doorMap_.end())
 		{
 			it->second->validity = true;
+			isPit_ = false;
+		}
+		*/
+		
+		//bro I don't know how I did it, but it works lol
+		auto range = doorMap_.equal_range(password);
+		for (range.first; range.first != range.second ; range.first++) {
+			range.first->second->validity = true;
 			isPit_ = false;
 		}
 	

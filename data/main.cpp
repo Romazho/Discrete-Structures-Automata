@@ -47,7 +47,6 @@ int main(void) {
 				try
 				{
 					if (doorSelection == "boss") {
-						agent.concatenatePassword();
 						agent.openDoor(doorSelection + ".txt");
 					}
 					else {
