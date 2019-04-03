@@ -1,0 +1,10 @@
+{
+S->a, A->bB, B->fS, B->bB
+}
+a Boss
+a Porte12
+abbbb Porte9
+abbbbbf Porte18
+ab Porte17
+abf Porte2
+ab Porte8
