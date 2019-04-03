@@ -27,7 +27,6 @@ public:
 	void printEvent(); /// Opérateur ?
 	void printBoss();
 	void printBoss(std::vector<Door*>::iterator& it, std::vector<Door*>::iterator& last);
-	void concatenatePassword();
 	void challengeBoss();
 	void concatenateAutomate();
 

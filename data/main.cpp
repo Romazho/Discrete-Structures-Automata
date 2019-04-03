@@ -55,7 +55,6 @@ int main(void) {
 					break; // if no exception
 				}
 				catch (invalid_argument& ia) { cout << ia.what(); }
-				catch (out_of_range& oor) { cout << oor.what(); }
 			}
 			break;
 

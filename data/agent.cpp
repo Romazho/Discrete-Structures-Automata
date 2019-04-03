@@ -28,20 +28,12 @@ Agent::~Agent(void)
 	automates_.clear();
 }
 
-/**
- * \brief Let the player enter in the maze
- */
 void Agent::enterMaze()
 {
 	inMaze_ = true;
 	openDoor("Porte1.txt");
 }
 
-/**
- * \brief Open the door if it is valid, create the associated automate, store them and print the door
- * \param fileName [const-ref] Name of the file
- * \return If the door can't be opened throw exception
- */
 void Agent::openDoor(const string& fileName)
 {
 	if (!path_.empty() && !path_.back()->canOpen(fileName))
@@ -64,7 +56,7 @@ void Agent::openDoor(const string& fileName)
 
 		cout << *door;
 
-		string chosenDoor = fileName.substr(0, fileName.size() - 4);	//on enleve le ".txt"
+		string chosenDoor = fileName.substr(0, fileName.size() - 4);	
 		if ((path_.size() != 0) && (chosenDoor != "Porte1")) { /// Pas de .txt ? Ou chosen door?
 			password_ += path_[path_.size()-2]->getPassMap()[chosenDoor];
 		}
@@ -86,7 +78,7 @@ void Agent::challengeBoss() {
 
 	fstream file("Boss.txt", ios::in);
 
-	//virifying if the path is right
+	// Check if the path is right
 	for (size_t i = 0; i < path_.size() && !file.eof(); i++) {
 
 		string doorName;
@@ -132,14 +124,14 @@ void Agent::concatenateAutomate()
 			{
 				if (tmpPath[i]->getRules()[j][k] == automates_[i - 1]->getLastNode()) // Remove doubles
 				{
-					/*
+					
 					if(automates_[i - 1]->getLastNode() != 'S')
 					{ 
 						tmpPath[i]->getRules()[j][k] = newStarter;
 						hasChanged = true;
 						break;
 					}
-					*/
+					
 				}
 			}
 
@@ -175,9 +167,6 @@ void Agent::concatenateAutomate()
 	}
 }
 
-/**
- * \brief delete the Automates, clear Door::path_ and exit the maze
- */
 void Agent::clearPath()
 {
 	for (Automate * it : automates_)
@@ -191,7 +180,6 @@ void Agent::clearPath()
 	inMaze_ = false;
 }
 
-//à completer////////////////////////////////////////////////////////////////////////////////
 void Agent::printEvent()
 {
 	if (event_.empty() == true)
@@ -236,34 +224,4 @@ void Agent::printBoss(vector<Door*>::iterator& present, vector<Door*>::iterator&
 
 	cout << endl << **present;
 
-}
-
-void Agent::concatenatePassword() 
-{
-/*
-	for (int i = 0; i < path_.size(); i++)
-	{
-
-		string doorName = path_[i]->getChosenDoor();
-
-		//password_ += path_[i]->getDoorMap().find(doorName).nextDoorName;
-
-		//fuck je me suis trompé, ca doit etre doorPassword...
-		auto it = path_[i]->getDoorMap().find(doorName);
-		if (it != path_[i]->getDoorMap().end())
-		{
-			password_ += it->second->nextDoorName;
-			//wait mais ca doit prendre seulement une fois le mot de pass meme s'il y a deux portes
-		}
-	}
-	*/
-	/*
-	for(size_t i = 0; i < path_.size();++i)
-	{
-		if (i != path_.size() path_[i] != "Porte1")
-		{
-			password_ += door->getPassMap().find()
-		}
-	}
-	*/
 }

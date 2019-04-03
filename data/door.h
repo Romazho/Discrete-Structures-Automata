@@ -63,9 +63,9 @@ private:
 	bool bossDefeated_;
 
 	std::vector<std::string> rules_;
-	std::multimap<std::string, NextDoor*> doorMap_;
-	std::map<std::string, std::string> passMap_; //prend un string:doorname et retourne string:password
-	std::vector<std::string> passwords_;
+	std::multimap<std::string, NextDoor*> doorMap_; // Find by password
+	std::map<std::string, std::string> passMap_; // Find by next door name
+	std::vector<std::string> passwords_; // For boss and other usage
 
 	void readFile(const std::string& fileName);
 	void readRule(std::fstream& file);

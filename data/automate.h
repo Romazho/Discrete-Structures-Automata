@@ -15,26 +15,28 @@
 class Automate
 {
   public:
+	/*Constructors*/
 	Automate(void) = default;
 	Automate(Door* door) : door_(door) { generateAutomate(); };
-	void generateAutomate();
+	
+	/*Getters*/
 	Door* getDoor() { return door_; };
-
-	void validatePasswords();
 	char getLastNode() const { return lastNode_; };
+
+	/*Others*/
+	void validatePasswords();
 	void validatePassword(const std::string& password);
-	bool trouverLettre(const char& lettre, int& longueur, std::vector<Edge*>& startEdges, char& etatActuel, char& etatPrecedent);
+	bool findLetter(const char& lettre, int& longueur, std::vector<Edge*>& startEdges, char& actualState, char& precedentState);
 
 
 
   private:
-	/*Attributes*/
 	Door* door_; // Door associated with the automate
-	std::vector<std::string> toValidate_; //était vide
 	NodeTree nodeTree_;
 	char lastNode_;
-	/*Private functions*/
-	
+	std::vector<std::string> toValidate_; 
+
+	void generateAutomate();
 };
 
 #endif // !AUTOMATE_H

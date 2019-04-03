@@ -98,11 +98,6 @@ void Automate::validatePasswords()
 	}
 }
 
-/**
- * \brief Validate an confirmed password
- * \param password found by the Automate
- */
-//on valide un password
 void Automate::validatePassword(const string& password)
 {
 	//Password already validated when the door was built
@@ -110,52 +105,47 @@ void Automate::validatePassword(const string& password)
 		return;
 
 	vector<Edge*> startEdges = nodeTree_.at('S'); // Always start from 'S'
-	char etatActuel = 'S';
-	char etatPrecedent = 'S';
+	char actualState = 'S';
+	char precedentState = 'S';
 
-	int longueurChemin = 0;
-
-	//fonction qui parcourt le chemin qui prend en paramètre la première lettre
-	//et qui retourne un bool
-	//on parcourt le chemin = password
+	int pathLength = 0;
 	for (size_t i = 0; i < password.size(); i++) {
 
-		bool trouvee = trouverLettre(password[i], longueurChemin, startEdges, etatActuel, etatPrecedent);
+		bool trouvee = findLetter(password[i], pathLength, startEdges, actualState, precedentState);
 
-		//si on a trouvé la lettre alors on cherche la suivante.
+		// If letter found find next
 		if (trouvee == true) {
-			//besoin de donner l'id du prochain état ex:A
-			if (etatActuel != 'E') {
-				startEdges = nodeTree_.at(etatActuel);
+			//Give id of next state
+			if (actualState != 'E') {
+				startEdges = nodeTree_.at(actualState);
 			}
 		}
-		//si on a pas trouvé alors il est inutile de continuer.
+		// If not found exit; 
 		else {
 			break;
 		}
 
 	}
 
+	// If everything ok validate password
+	// Verify if there is a path to final state 
 
-	//on valide le password si tout est correct
-	//verifier si on se trouve à un état final
+	if ( (pathLength == password.size())  && ((actualState == 'E') || (actualState == 'S')) ) {
 
-	if ( (longueurChemin == password.size())  && ((etatActuel == 'E') || (etatActuel == 'S')) ) {
-
-		if (etatActuel == 'S') {
+		if (actualState == 'S') {
 			vector<Edge*> Edges = nodeTree_.at('S');
 			auto it = find_if(Edges.begin(), Edges.end(), [](Edge* edge) {return edge->value_ == '0'; });
 			if (it != Edges.end()) {
 				door_->getDoorName() == "Boss" ? door_->validateBossDoor() : door_->validate(password);
-				lastNode_ = etatActuel;
+				lastNode_ = actualState;
 			}
 
 		}
 		else {
 			
-			//retourner le node avant 'E'
+			// Return node before 'E'
 			door_->getDoorName() == "Boss" ? door_->validateBossDoor() : door_->validate(password);
-			lastNode_ = etatPrecedent;
+			lastNode_ = precedentState;
 		
 		}
 	}
@@ -163,19 +153,18 @@ void Automate::validatePassword(const string& password)
 	
 }
 
+bool Automate::findLetter(const char& lettre, int& pathLength, vector<Edge*>& startEdges, char& actualState, char& precedentState) {
 
-bool Automate::trouverLettre(const char& lettre, int& longueurChemin, vector<Edge*>& startEdges, char& etatActuel, char& etatPrecedent) {
-
-	//on parcourt tous les edges du starter
+	// Iteration on all edges from start node
 	for (size_t i = 0; i < startEdges.size(); i++) {
 
-		//si on a trouvé le bon chemin
-		//verifier si la destination est differente de l'état actuelle
-		if ( (startEdges[i]->value_ == lettre) && (startEdges[i]->src_->id_ == etatActuel) ) {
+		// If good path is found
+		// Verification is destination is different from actual state
+		if ( (startEdges[i]->value_ == lettre) && (startEdges[i]->src_->id_ == actualState) ) {
 
-			etatPrecedent = startEdges[i]->src_->id_;
-			etatActuel = startEdges[i]->dest_->id_;
-			longueurChemin++;
+			precedentState = startEdges[i]->src_->id_;
+			actualState = startEdges[i]->dest_->id_;
+			pathLength++;
 			return true;
 		}
 	}

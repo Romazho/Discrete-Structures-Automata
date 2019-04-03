@@ -6,16 +6,14 @@
  ****************************************************************************/
 
 #include"nodeTree.h"
+
 using namespace std;
+
 map<Node*,vector<Edge*>>::iterator NodeTree::find(Node* node)
 {
 	return nodeTree_.find(node);
 }
 
-/**
- * \brief Find a Node by id
- * \return std::map<Node*, Edge*>::iterator on the Node if found
- */
 map<Node*, vector<Edge*>>::iterator NodeTree::find(const char& id)
 {
 	return find_if(nodeTree_.begin(), nodeTree_.end(), [id](pair<Node*, vector<Edge*>> pair)
@@ -26,17 +24,13 @@ map<Node*, vector<Edge*>>::iterator NodeTree::find(const char& id)
 
 vector<Edge*> NodeTree::at(const char& id)
 {
-	//ca ne marche pas.
 	auto it = find(id);
 	if (it != nodeTree_.end())
 	{
-		return it->second;
+		return it->second; // The key exist
 	}
-	vector<Edge*> emptyVect;
+	vector<Edge*> emptyVect; // Not optimal but ok for this TP
 	return emptyVect;
-
- 
-	/// Declarer autre chose pour un autre return	//l'erreur est ici!
 }
 
 std::vector<Edge*> NodeTree::at(Node* node)
